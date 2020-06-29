@@ -37,11 +37,12 @@ public class Tenant {
   		tenantId = id;
   	}
 
+  	//Tenant ID
 	public Integer getTenantId() {
 		return tenantId;
 	}
 		
-	
+	//TenantName
 	public String getTenantName() {
 		return tenantName;
 	}
