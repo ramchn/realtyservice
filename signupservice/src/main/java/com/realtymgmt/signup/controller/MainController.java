@@ -98,7 +98,7 @@ public class MainController {
 	  return result;
   }
   
-  //sign up service 123
+  //sign up service
   @PostMapping(value={"/ownerpmsignup", "/ownersignup", "/pmsignup", "/spsignup", "/tenantsignup"})
   private String signup(HttpServletRequest request, @RequestParam String EmailAddress, @RequestParam String UserPassword, 
 	  						@RequestParam String FirstName, @RequestParam(required = false) String LastName, 
