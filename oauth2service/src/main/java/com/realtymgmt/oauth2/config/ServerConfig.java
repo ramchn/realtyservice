@@ -25,11 +25,11 @@ public class ServerConfig extends GlobalAuthenticationConfigurerAdapter {
 		auth
 		   .jdbcAuthentication()
 		   .dataSource(datasource)
-		   .usersByUsernameQuery("select email_address,user_password,enabled "
-			        + "from user "
-			        + "where email_address = ?")
-		   .authoritiesByUsernameQuery("select user_email_address,authority "
-			        + "from access "
-			        + "where user_email_address = ?");
+		   .usersByUsernameQuery("select EmailAddress,UserPassword,Enabled "
+			        + "from User "
+			        + "where EmailAddress = ?")
+		   .authoritiesByUsernameQuery("select User_EmailAddress,Authority "
+			        + "from Access "
+			        + "where User_EmailAddress = ?");
 	}
 }
