@@ -49,19 +49,6 @@ public class MainController {
 	return "GET Index";
   }
   
-
-  @GetMapping("/countries")
-  private List<Map<String, Object>> getCountries() {
-	  
-	  return jdbcTemplate.queryForList("select idCountry, CountryName, CountryCode from Country");
-  }
-	  
-  @GetMapping("/statesbycountry")
-  private List<Map<String, Object>> getStatesByCountry() {
-		  
-	  return jdbcTemplate.queryForList("select idState, StateName, StateCode, CountryName, CountryCode from State, Country where State.Country_idCountry = Country.idCountry");
-  }
-  
   @GetMapping("/genders")
   private List<Map<String, Object>> getGenders() {
 	  
