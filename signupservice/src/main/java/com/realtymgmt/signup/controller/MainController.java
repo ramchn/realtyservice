@@ -1,15 +1,28 @@
 package com.realtymgmt.signup.controller;
 
+import java.io.IOException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
+import java.util.UUID;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -27,6 +40,9 @@ public class MainController {
 	
   @Autowired
   JdbcTemplate jdbcTemplate;
+  
+  @Autowired
+  Environment env;
   
   @GetMapping("/index")
   public String gindex() {		
@@ -52,6 +68,49 @@ public class MainController {
 	  return jdbcTemplate.queryForList("select idGender, Gender from Gender");
   }
   
+  @GetMapping("/signup/verification")
+  private String userVerification(@RequestParam String token) {
+	  
+	  String result = "";
+
+	  try {	  
+		  Map<String, Object> columns = jdbcTemplate.queryForMap("SELECT EmailAddress, Enabled FROM User WHERE VerificationToken = '"+token+"'");
+		  
+		  String EmailAddress = columns.get("EmailAddress").toString();
+		  Object Enabled = columns.get("Enabled");
+		  
+		  if (Enabled == null) {
+			  Object[] params = { 1, EmailAddress};
+			  int[] types = {Types.TINYINT, Types.VARCHAR};		  
+			  Number updated  = jdbcTemplate.update("update User set Enabled = ? WHERE EmailAddress = ?", params, types);
+	
+			  if (updated.intValue() == 1) {
+				  String PersonType = jdbcTemplate.queryForObject("select PersonType from Person, PersonType where Person.PersonType_idPersonType = PersonType.idPersonType and Person.User_EmailAddress = '"+EmailAddress+"'", String.class);
+	
+				  Map<String, Object> accessParams = new HashMap<String, Object>();		  
+				  accessParams.put("Authority", "ROLE_"+ PersonType.toUpperCase());
+				  accessParams.put("User_EmailAddress", EmailAddress);
+				  tableInsert("Access", accessParams);
+	
+				  result = "user ("+EmailAddress+") activated successfully";
+				  
+			  } else {
+				  result = "user activation failed";
+				  
+			  } 
+		  } else {
+			  result = "user already activated";
+			  
+		  }
+		  
+	  } catch (EmptyResultDataAccessException e) {
+		  result = "user activation failed";
+		  
+	  }	 
+	  
+	  return result;
+  }
+  
   //sign up service	 
   @PostMapping(value={"/ownerpmsignup", "/ownersignup", "/pmsignup", "/spsignup", "/tenantsignup"})
   private String signup(HttpServletRequest request, @RequestParam String EmailAddress, @RequestParam String UserPassword, 
@@ -60,15 +119,18 @@ public class MainController {
 	  						@RequestParam(required = false) String PhoneType, @RequestParam(required = false) String DOB, 
 	  						@RequestParam(required = false) Integer GenderId, @RequestParam(required = false) String Address1, 
 	  						@RequestParam(required = false) String Address2, @RequestParam(required = false) String Address3,
-	  						@RequestParam(required = false) String Zip, @RequestParam(required = false) String City, 
-	  						@RequestParam(required = false) Integer StateId, @RequestParam(required = false) String ServiceCategory, 
-	  						@RequestParam(required = false) String YearsOfExperience, @RequestParam(required = false) String AreasOfExpertise, 
-	  						@RequestParam(required = false) String AreaCoverage, @RequestParam(required = false) Integer PropertyInfoId) {
+	  						@RequestParam(required = false) String Zip, @RequestParam(required = false) String CityName, 
+	  						@RequestParam(required = false) String StateCode, @RequestParam(required = false) String CountryCode, 
+	  						@RequestParam(required = false) String ServiceCategory, @RequestParam(required = false) String YearsOfExperience, 
+	  						@RequestParam(required = false) String AreasOfExpertise, @RequestParam(required = false) String AreaCoverage, 
+	  						@RequestParam(required = false) Integer PropertyInfoId) 
+	  						throws AddressException, MessagingException, IOException {
 	  
 	  	  
 	  Number PersonTypeId = 0;
 	  Number PersonId = 0;
-	 	  
+	  String VerificationToken = UUID.randomUUID().toString();
+	  	  
 	  if("/ownerpmsignup".equals(request.getRequestURI())) {
 		  for (Map<String, Object> personType : getPersonType()) {
 			  BidiMap<String, Object> bidiPersonType = new DualHashBidiMap<>(personType);			  
@@ -79,7 +141,8 @@ public class MainController {
 	      }		 
 		  // create owner and he acting as a property manger
 		  PersonId = createPerson(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId);
+				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+				StateCode, CountryCode, VerificationToken);
 		  
 	  } else if("/ownersignup".equals(request.getRequestURI())) {
 		  for (Map<String, Object> personType : getPersonType()) {
@@ -91,7 +154,8 @@ public class MainController {
 	      }		
 		  // create owner
 		  PersonId = createPerson(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId);
+					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+					StateCode, CountryCode, VerificationToken);
 		  
 	  } else if ("/pmsignup".equals(request.getRequestURI())) {
 		  for (Map<String, Object> personType : getPersonType()) {
@@ -103,7 +167,8 @@ public class MainController {
 	      }		  
 		  // create property manger
 		  PersonId = createPerson(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId);
+					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+					StateCode, CountryCode, VerificationToken);
 		  
 	  } else if ("/spsignup".equals(request.getRequestURI())) {
 		  for (Map<String, Object> personType : getPersonType()) {
@@ -119,8 +184,9 @@ public class MainController {
 		  } else {
 			  // create service provider
 			  PersonId = createServiceProvider(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId, ServiceCategory, YearsOfExperience, 
-					AreasOfExpertise, AreaCoverage);
+					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+					StateCode, CountryCode, ServiceCategory, YearsOfExperience, 
+					AreasOfExpertise, AreaCoverage, VerificationToken);
 			  
 		  }
 		  
@@ -139,18 +205,21 @@ public class MainController {
 		  } else {
 			  // create tenant
 			  PersonId = createTenant(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId, PropertyInfoId);
+					PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+					StateCode, CountryCode, PropertyInfoId, VerificationToken);
 			  
 		  }
 	  }	  	  
 	  
 	  if (PersonId.intValue() > 0 ) {		  
 		  result = "user created : " + PersonId;
+		  sendActivationLink(EmailAddress, VerificationToken);
 		  
 	  } else {		  
 		  result = "unable to create user";
 		  
 	  }
+	 
 	  
 	  return result;
   }
@@ -163,14 +232,15 @@ public class MainController {
   
   private Number createServiceProvider(Number PersonTypeId, String EmailAddress, String UserPassword, String FirstName, 
 		  							String LastName, String MiddleName, String PhoneNumber, String PhoneType, String DOB, 
-		  							Integer GenderId, String Address1, String Address2, String Address3, String Zip, String City, 
-		  							Integer StateId, String ServiceCategory, String YearsOfExperience, String AreasOfExpertise, 
-		  							String AreaCoverage) {
+		  							Integer GenderId, String Address1, String Address2, String Address3, String Zip, String CityName, 
+		  							String StateCode, String CountryCode, String ServiceCategory, String YearsOfExperience, String AreasOfExpertise, 
+		  							String AreaCoverage, String VerificationToken) {
 	  
 	  Number ServiceProviderId = 0;
 	  
 	  Number PersonId = createPerson(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId);
+				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+				StateCode, CountryCode, VerificationToken);
 	  
 	  if(PersonId.intValue() > 0) {
 		  Map<String, Object> spParams = new HashMap<String, Object>();		  
@@ -188,12 +258,15 @@ public class MainController {
   private Number createTenant(Number PersonTypeId, String EmailAddress, String UserPassword, 
 			String FirstName, String LastName, String MiddleName, String PhoneNumber, 
 			String PhoneType, String DOB, Integer GenderId, String Address1, 
-			String Address2, String Address3, String Zip, String City, Integer StateId, Integer PropertyInfoId) {
+			String Address2, String Address3, String Zip, String CityName, 
+			String StateCode, String CountryCode,  
+			Integer PropertyInfoId, String VerificationToken) {
 	  
 	  
 	  Number TenantId = 0;
 	  Number PersonId = createPerson(PersonTypeId, EmailAddress, UserPassword, FirstName, LastName, MiddleName, PhoneNumber, 
-				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, City, StateId);
+				PhoneType, DOB, GenderId, Address1, Address2, Address3, Zip, CityName, 
+				StateCode, CountryCode, VerificationToken);
 	  
 	  if(PersonId.intValue() > 0) {
 		  Map<String, Object> tenantParams = new HashMap<String, Object>();		  
@@ -207,16 +280,15 @@ public class MainController {
   private Number createPerson(Number PersonTypeId, String EmailAddress, String UserPassword, 
 			String FirstName, String LastName, String MiddleName, String PhoneNumber, 
 			String PhoneType, String DOB, Integer GenderId, String Address1, 
-			String Address2, String Address3, String Zip, String City, Integer StateId) {
-	  
-	  Number CityId = 0;
+			String Address2, String Address3, String Zip, String CityName, 
+			String StateCode, String CountryCode, String VerificationToken) {
+
 	  Number AddressId = 0;
 	  Number userCreated = 0;
 	  Number PersonId = 0;
 	  
 	  
 	  Map<String, Object> userParams = new HashMap<String, Object>();
-	  Map<String, Object> cityParams = new HashMap<String, Object>();
 	  Map<String, Object> addressParams = new HashMap<String, Object>();
 	  Map<String, Object> ownerParams = new HashMap<String, Object>();
 	  
@@ -229,7 +301,9 @@ public class MainController {
 	  userParams.put("PhoneNumber", PhoneNumber);
 	  userParams.put("PhoneType", PhoneType);
 	  userParams.put("DOB", DOB);
-	  userParams.put("Gender_idGender", GenderId);	 	 
+	  userParams.put("Gender_idGender", GenderId);	 	
+	  userParams.put("VerificationToken", VerificationToken);
+	 
 	  // create user
 	  userCreated = createUser("User", userParams);	  
 	  
@@ -239,15 +313,13 @@ public class MainController {
 		  addressParams.put("Address2", Address2);
 		  addressParams.put("Address3", Address3);
 		  addressParams.put("Zip", Zip);
-		  cityParams.put("CityName", City);
-		  cityParams.put("State_idState", StateId);
+		  addressParams.put("CityName", CityName);
+		  addressParams.put("StateCode", StateCode);
+		  addressParams.put("CountryCode", CountryCode);
 		  
 		  boolean AddressValuesAreAllNull = addressParams.values().stream().allMatch(Objects::isNull);
-		  boolean CityValuesAreAllNull = cityParams.values().stream().allMatch(Objects::isNull);
 		  
-		  if (!AddressValuesAreAllNull && !CityValuesAreAllNull) {		  
-			  CityId = cityInsert("City",cityParams);		  
-			  addressParams.put("City_idCity", CityId);
+		  if (!AddressValuesAreAllNull) {		  
 			  AddressId = tableInsert("Address",addressParams);
 		  }
 		  
@@ -263,27 +335,14 @@ public class MainController {
 	  
 	  return PersonId;
   }
-  
-  private Number cityInsert(String table, Map<String, Object> params) {
-	  Number CityId = 0;
-	  
-	  try {	  
-		  CityId = jdbcTemplate.queryForObject("SELECT idCity FROM City WHERE CityName = '"+params.get("CityName")+"' and State_idState = "+params.get("State_idState"), Number.class);
-	  
-	  } catch (EmptyResultDataAccessException e) {
-		  CityId = tableInsert(table, params);
-	  }	  
-			  
-	  return CityId;
-  }
-  
+   
   private Number createUser(String table, Map<String, Object> params) {
 	  
 	  Number userCreated = 0;
 	  
 	  try {	  
 		  jdbcTemplate.queryForObject("SELECT FirstName FROM User WHERE EmailAddress = '"+params.get("EmailAddress")+"'", String.class);
-		  result = "user email already exist : unable to create user";
+		  result = "user ("+params.get("EmailAddress")+") already exist : unable to create user";
 		  
 	  } catch (EmptyResultDataAccessException e) {
 		  userCreated = new SimpleJdbcInsert(jdbcTemplate).withTableName("User").execute(params);
@@ -299,6 +358,37 @@ public class MainController {
 				.withTableName(table)
 				.usingGeneratedKeyColumns("id" + table)
 				.executeAndReturnKey(params);	
+  }
+  
+  private void sendActivationLink(String EmailAddress, String VerificationToken) throws AddressException, MessagingException, IOException {
+	  
+	   Message msg = new MimeMessage(getSession(getProperties()));
+	   msg.setFrom(new InternetAddress(env.getProperty("email.address"), false));
+
+	   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(EmailAddress));
+	   msg.setSubject("User Activation");
+	   
+	   msg.setContent("User Activation Link: <a href='http://localhost:8071/signup/verification?token="+ VerificationToken +"'>Click</a> here to activate user.", "text/html");
+	   
+	   Transport.send(msg);   
+	}
+  
+  private Properties getProperties() {	
+	  Properties props = new Properties();
+	  props.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
+	  props.put("mail.smtp.starttls.enable", env.getProperty("mail.smtp.starttls.enable"));
+	  props.put("mail.smtp.host", env.getProperty("mail.smtp.host"));
+	  props.put("mail.smtp.port", env.getProperty("mail.smtp.port"));
+	  return props;
+  }
+		 
+  private Session getSession(Properties props) {
+	  Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+		  protected PasswordAuthentication getPasswordAuthentication() {
+			  return new PasswordAuthentication(env.getProperty("email.address"), env.getProperty("email.password"));
+		  }
+	  });
+	  return session;
   }
   
 }
