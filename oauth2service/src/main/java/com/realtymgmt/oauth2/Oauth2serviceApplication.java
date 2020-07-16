@@ -35,8 +35,4 @@ public class Oauth2serviceApplication {
 		return user;
 	}
 	
-	@GetMapping("/user")
-	Principal getUser1(Principal user) {
-		return user;
-	}
 }
