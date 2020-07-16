@@ -40,7 +40,6 @@ CREATE TABLE `Access` (
 
 LOCK TABLES `Access` WRITE;
 /*!40000 ALTER TABLE `Access` DISABLE KEYS */;
-INSERT INTO `Access` VALUES (1,'ROLE_COMPANYOWNER','ramamoorthy_p@yahoo.com');
 /*!40000 ALTER TABLE `Access` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +160,6 @@ CREATE TABLE `Email` (
 
 LOCK TABLES `Email` WRITE;
 /*!40000 ALTER TABLE `Email` DISABLE KEYS */;
-INSERT INTO `Email` VALUES (1,'ramamoorthy_p@yahoo.com',1,2);
 /*!40000 ALTER TABLE `Email` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +386,6 @@ CREATE TABLE `Person` (
 
 LOCK TABLES `Person` WRITE;
 /*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-INSERT INTO `Person` VALUES (2,'ramamoorthy_p@yahoo.com',7,NULL,'2020-07-16 09:04:37');
 /*!40000 ALTER TABLE `Person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -648,7 +645,6 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES ('ramamoorthy_p@yahoo.com','amFtdW5wYXNz',1,'Jamun','Realty',NULL,NULL,1,'9946daaa-eba4-4bae-a128-c48888234137');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
