@@ -1,0 +1,49 @@
+<!-- header starts -->
+<div class="container grey">
+  <h1>Prime Realty</h1> 
+  <h4>Realty Management Service</h4> 
+  <p>All property related work at one place..</p>
+</div>
+<!-- header ends -->    
+    
+<!-- content starts -->
+<div class="row-padding">
+  <div class="two-column">
+    <h4>Sign In to Jamun</h4>
+      <span>{{error}}</span>
+     <form ng-submit="login()">            
+         <table>                 
+             <tr>
+                 <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="username" required></td>
+             </tr>                  
+             <tr>
+                 <td>Password</td><td colspan="2"><input type="password" class="textfield" ng-model="password" required></td>
+            </tr>
+             <tr>
+                 <td><button class="button" onclick="window.location.href='#/'">Home</button></td>
+                 <td>
+                     <input type="submit" class="button" value="Sign In"/>                     
+                 </td>
+                 <td>                     
+                     <img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/>
+                 </td>
+             </tr>
+         </table>         
+     </form>
+  </div>
+  <div class="two-column">
+    <h4>Trouble signing in</h4>
+    <p>check your email</p> 
+      <p>You received two emails </p>
+      <p>1. right after the sign up to verify your email</p>
+      <p>2. right after the payment with username and password</p>
+  </div>
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div class="container grey">
+  <h3>Footer Info</h3> 
+  <p>KOSoft Copyright 2020</p> 
+</div>
+<!-- footer ends -->

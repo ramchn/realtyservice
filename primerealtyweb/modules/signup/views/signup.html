@@ -1,0 +1,69 @@
+<!-- header starts -->
+<div class="container grey">
+  <h1>Prime Realty</h1> 
+  <h4>Realty Management Service</h4> 
+  <p>All property related work at one place..</p>
+</div>
+<!-- header ends -->    
+    
+<!-- content starts -->
+<form ng-submit="submitForm()">
+<h4>Sign Up with Jamun</h4>  
+<span>{{result.message}}</span>
+<div class="row-padding">
+  <div class="two-column">         
+         <table>     
+             <tr>
+                 <td>Sign up as: </td>
+                 <td colspan="2">                     
+                     <select ng-model="selectedPersonType" class="textfield" ng-options="personType.PersonType for personType in personTypes" required> 
+                     </select>
+                 </td>
+             </tr>    
+             <tr>
+                 <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="EmailAddress" required/></td>
+             </tr>                  
+             <tr>
+                 <td>Password</td><td colspan="2"><input type="password" class="textfield" ng-model="UserPassword" required/></td>
+             </tr>
+             <tr>
+                 <td>First Name</td><td colspan="2"><input type="text" class="textfield" ng-model="FirstName" required/></td>
+             </tr>
+             <tr>
+                 <td>Middle Name</td><td colspan="2"><input type="text" class="textfield" ng-model="MiddleName" value=""/></td>
+             </tr>
+             <tr>
+                 <td>Last Name</td><td colspan="2"><input type="text" class="textfield" ng-model="LastName" value=""/></td>
+             </tr>
+             <tr>
+                 <td>Gender</td>
+                 <td colspan="2"><select ng-model="Gender" class="textfield" ng-options="gender.Gender for gender in genders">                        
+                     </select>
+                 </td>
+             </tr>                  
+             <tr>
+                 <td>Date of Birth</td><td colspan="2"><input type="text" class="textfield" ng-model="DOB"/></td>
+             </tr>  
+             <tr>
+               <td><button class="button" onclick="window.location.href='#/'">Home</button></td>
+                <td>
+                    <input type="submit" class="button" value="Sign Up"/>                    
+                 </td>
+                 <td><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></td>
+           </tr> 
+         </table>       
+  </div>
+  <div class="two-column">
+      &nbsp;
+  </div>
+</div>
+</form>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div class="container grey">
+  <h3>Footer Info</h3> 
+  <p>KOSoft Copyright 2020</p> 
+</div>
+<!-- footer ends -->
+
