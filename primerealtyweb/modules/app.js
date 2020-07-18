@@ -20,7 +20,7 @@ angular.module('PrimeRealty', [
             controller: 'IndexController',
             templateUrl: 'modules/signup/views/index.html'
         })	 
-    .when('/signup', {
+    	.when('/signup', {
             controller: 'SignupController',
             templateUrl: 'modules/signup/views/signup.html'
         })    
