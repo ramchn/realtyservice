@@ -11,13 +11,6 @@
   <div class="two-column">         
          <table>     
              <tr>
-                 <td>Sign up as: </td>
-                 <td colspan="2">                     
-                     <select ng-model="selectedPersonType" class="textfield" ng-options="personType.PersonType for personType in personTypes" required> 
-                     </select>
-                 </td>
-             </tr>    
-             <tr>
                  <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="EmailAddress" required/></td>
              </tr>                  
              <tr>
@@ -37,9 +30,9 @@
                  <td colspan="2"><select ng-model="Gender" class="textfield" ng-options="gender.Gender for gender in genders">                        
                      </select>
                  </td>
-             </tr>                  
+             </tr>                
              <tr>
-               <td><button class="button" onclick="window.location.href='#/'">Home</button></td>
+               <td>&nbsp;</td>
                 <td>
                     <input type="submit" id="signupsubmit" class="button" value="Sign Up"/>                    
                  </td>

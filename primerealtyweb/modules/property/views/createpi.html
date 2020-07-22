@@ -1,0 +1,47 @@
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#/home">Home</a> > <a href="#/viewpi">Property Management</a> > <a href="#/viewpi">Property Information</a> > Create</p>   
+<div class="row-padding">
+  <div class="two-column">             
+      <table>
+          <tr><td>Property Type</td>
+              <td><select class="textfield">
+                  <option></option>
+                  <option>SingleFamily</option>
+                  <option>MultiFamily</option>
+                  <option>Land</option>
+                  <option>Condo/Appartments</option>
+                  </select>
+              </td></tr>
+          <tr><td>Square Feet</td><td><input type="textfield" class="textfield" name="SqFt" value=""/></td></tr>
+          <tr><td>Year Built</td><td><input type="textfield" class="textfield" name="YearBuilt" value=""/></td></tr>
+          <tr><td>HOA Dues</td><td><input type="textfield" class="textfield" name="HOADues" value=""/></td></tr>
+      </table>           
+  </div>
+  <div class="two-column">
+     <table>
+          <tr><td>Address 1</td><td><input type="textfield" class="textfield" name="Address1" value=""/></td></tr>
+          <tr><td>Address 2</td><td><input type="textfield" class="textfield" name="Address2" value=""/></td></tr>
+          <tr><td>City</td><td><input type="textfield" class="textfield" name="City" value=""/></td></tr>
+          <tr><td>Zip</td><td><input type="textfield" class="textfield" name="Zip" value=""/></td></tr>
+          <tr>
+               <td><button class="button" onclick="window.location.href='#/viewpi'">Back</button></td>
+                <td>
+                    <input type="button" class="button" value="Save"/>                    
+                 </td>
+                 <td><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></td>
+           </tr> 
+      </table>  
+  </div>
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

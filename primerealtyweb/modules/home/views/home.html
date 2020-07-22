@@ -1,41 +1,62 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-bottom: 1px solid #ddd;}
+</style>
 <!-- header starts -->
-<div class="container grey">
-  <h1>Prime Realty</h1> 
-  <h4>Realty Management Service</h4> 
-  <p>All property related work at one place..</p>
-</div>
-<!-- header ends -->  
-<div>
-<ul class="topnav">
-  <li><a class="active" href="#/home">Home</a></li>
-  <li><a href="#/home">Property Management</a></li>
-  <li><a href="#/home">Issue Tracking</a></li>
-  <li><a href="#/home">My Information</a></li>
-  <li class="right"><a href="#/home">About</a></li>
-</ul>
-</div>
+<div ui-view="header"></div>
+<!-- header ends -->
+<!-- menu starts -->
+<div ui-view="menu"></div>
+<!-- menu ends -->
 <!-- content starts -->
-<h4>Prime Realty Home</h4>   
+<h4>Welcome {{firstname}} {{lastname}}</h4>   
 <div class="row-padding">
-  <div class="two-column">            
-      <table>                 
-             <tr>
-                 <td>Welcome {{user.username}}</td>
-             </tr>             
-             <tr>
-                 <td><button class="button" onclick="window.location.href='#/signin'">Sign Out</button></td>
-             </tr>
-         </table>    
+  <div class="two-column">  
+      <div id="opmdiv" class="card">
+      <h4>Property Information</h4>
+        <p><a href="#/createpi">Create</a></p>
+        <table>
+          <tr><th>Type</th><th>Address</th></tr>
+          <tr><td>Single Family</td><td>5 Palm Cir, Shleton, CT</td></tr>
+          <tr><td>Land</td><td>10 John Dr, Milford, MI</td></tr>
+          <tr><td>Condo/Aptmts</td><td>13 Simpson Rd, Atlanta, GA</td></tr>
+        </table> 
+          <div style="text-align: right"><a href="#/viewpi">more..></a></div>
+      </div>
+      <div id="spdiv" class="card">
+      <h4>Service Provider Details</h4>
+        <table>
+          <tr><td>Service Category</td><td>Plumbing</td></tr>
+          <tr><td>Years of Experience</td><td>5 years</td></tr>
+          <tr><td>Areas of Expertise</td><td>Repair, Install</td></tr>
+          <tr><td>Area Coverage</td><td>Atlanta, Mariatta, GA</td></tr>
+        </table> 
+          <div style="text-align: right"><a href="#/editsp">edit..></a></div>
+      </div>
+      <div id="tndiv" class="card">
+      <h4>Tenant Details</h4>
+        <table>
+          <tr><td>My Rented Property</td><td>5, Shelby Ave, Milford, CT</td></tr>
+          <tr><td>My Owner</td><td>Jamun</td></tr>          
+        </table> 
+          <div style="text-align: right"><a href="#/home">more..></a></div>
+      </div>
   </div>
   <div class="two-column">
-      &nbsp;
+      <div class="card">
+      <h4>Issue Tracking</h4>
+      <p><a id="cihref" href="#/createit">Create</a></p>
+      <table>
+          <tr><th>Issue</th><th>Status</th></tr>
+          <tr><td>Kitchen tap leaking</td><td>Initiated</td></tr>
+          <tr><td>Oven not working</td><td>Work in Progress</td></tr>
+          <tr><td>Air Condition problem</td><td>Completed</td></tr>
+      </table> 
+        <div style="text-align: right"><a href="#/viewit">more..></a></div>
+      </div>
   </div>
 </div>
-<!-- content ends -->
-    
+<!-- content ends -->    
 <!-- footer starts -->    
-<div class="container grey">
-  <h3>Footer Info</h3> 
-  <p>KOSoft Copyright 2020</p> 
-</div>
+<div ui-view="footer"></div>
 <!-- footer ends -->

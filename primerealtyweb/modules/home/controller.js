@@ -22,5 +22,26 @@ angular.module('Home')
 .controller('HomeController',
     ['$scope', '$rootScope', 
     function ($scope, $rootScope) {        
-        $scope.user = $rootScope.globals.currentUser;
+        $scope.authority = $rootScope.globals.currentUser.authority;
+        $scope.firstname = $rootScope.globals.currentUser.firstname;
+        $scope.lastname = $rootScope.globals.currentUser.lastname;
+        
+        if($scope.authority == 'ROLE_SERVICEPROVIDER') {
+            $("#spdiv").css("display","block");
+            $("#opmdiv").css("display","none");
+            $("#tndiv").css("display","none");            
+            $("#cihref").css("display","none");
+            
+        } else if($scope.authority == 'ROLE_TENANT') {
+            $("#tndiv").css("display","block");
+            $("#opmdiv").css("display","none");            
+            $("#spdiv").css("display","none");
+            $("#cihref").css("display","block");
+            
+        } else {
+            $("#opmdiv").css("display","block");            
+            $("#spdiv").css("display","none");
+            $("#tndiv").css("display","none");
+            $("#cihref").css("display","none");
+        }
     }]);

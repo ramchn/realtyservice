@@ -1,0 +1,38 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-bottom: 1px solid #ddd; padding: 5px;}
+    table.inlineTable{display:inline;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<h4>Prime Realty Home</h4> 
+<p><a href="#/home">Home</a> > <a href="#/viewit">Issue Tracking</a> > View</p>   
+<div class="row-padding">
+    <p><a id="createissue" href="#/createit" title="create Issue">Create</a></p>
+  <div class="one-column">  
+      <table class="inlineTable">
+          <tr><th>Issue</th><th>Description</th><th>Category</th><th><img src="assets/attachment.png" width="20" height="20"></th><th>Status</th></tr>
+          <tr><td>Kitchen tap leaking</td><td>Kitchen tap is...</td><td>Kitchen</td><td></td><td>Initiated</td></tr>
+          <tr><td>Oven not working</td><td>Oven plug burnt...</td><td>Appliances</td><td><img src="assets/images.png" width="15" height="13"></td><td>Work in Progress</td></tr>
+          <tr><td>Air Condition problem</td><td>Air Condition not...</td><td>Roof</td><td></td><td>Completed</td></tr>
+      </table> 
+      <table class="inlineTable">
+          <tr><th>Property Details</th></tr>
+          <tr><td>5 Palm Cir, Shleton, CT</td></tr>
+          <tr><td>13 Simpson Rd, Atlanta, GA</td></tr>
+          <tr><td>5 Palm Cir, Shleton, CT</td></tr>
+      </table> 
+  </div>
+  
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

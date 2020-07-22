@@ -8,30 +8,35 @@ angular.module('Signup')
         var service = {};
         
         service.getPersonTypes = function (callback) {
-            $http.get(ENV.SIGNUP_API_URL + '/persontypes')
-            .then(function (response) {   
-                callback(response.data);
-            }, function (response) {
-                callback(response);
-            });            
+            service.httpGet(ENV.SIGNUP_API_URL + '/persontypes', callback);               
         }
         
         service.getGenders = function (callback) {
-            $http.get(ENV.SIGNUP_API_URL + '/genders')
-            .then(function (response) {
-                callback(response.data);
-            }, function (response) {
-                callback(response);
-            });              
+            service.httpGet(ENV.SIGNUP_API_URL + '/genders', callback);                   
         }
         
         service.signUp = function (formData, callback) {
-            $http({
-                method: 'POST',
-                url: ENV.SIGNUP_API_URL + '/signup',
-                params: formData,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}                
-            })
+            service.httpPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);
+        }
+        
+        service.signupbyPropertyInfo = function (formData, callback) {
+            service.httpPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
+        }
+        
+        service.userVerification = function (formData, callback) {
+            service.httpPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
+        }
+        
+        service.signIn = function (formData, callback) {            
+            service.httpPost(ENV.SIGNUP_API_URL + '/signin', formData, callback);              
+        }   
+        
+        service.retrievePassword = function (formData, callback) {            
+            service.httpPost(ENV.SIGNUP_API_URL + '/signin/retrievepassword', formData, callback);          
+        }         
+        
+        service.httpGet = function(url, callback) {
+            $http.get(url)
             .then(function (response) {
                 callback(response.data);
             }, function (response) {
@@ -39,10 +44,10 @@ angular.module('Signup')
             });   
         }
         
-        service.signIn = function (formData, callback) {
+        service.httpPost = function(url, formData, callback) {
             $http({
                 method: 'POST',
-                url: ENV.SIGNUP_API_URL + '/signin',
+                url: url,
                 params: formData,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}                
             })
@@ -50,8 +55,8 @@ angular.module('Signup')
                 callback(response.data);
             }, function (response) {
                 callback(response);
-            });   
-        }   
+            });  
+        }
         
         return service;
     }])
@@ -61,13 +66,17 @@ angular.module('Signup')
     function (Base64, $http, $cookieStore, $rootScope) {
         var service = {};
 
-        service.SetCredentials = function (username, password) {
+        service.SetCredentials = function (username, password, personid, authority, firstname, lastname) {
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
                 currentUser: {
                     username: username,
-                    authdata: authdata
+                    authdata: authdata,
+                    personid: personid,
+                    authority: authority,
+                    firstname: firstname,
+                    lastname: lastname
                 }
             }
 
