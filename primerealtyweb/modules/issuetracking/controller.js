@@ -2,10 +2,10 @@
 
 angular.module('IssueTracking')
 
-.run(['$rootScope', '$location', '$cookieStore', '$http',
-    function ($rootScope, $location, $cookieStore, $http) {
+.run(['$rootScope', '$location', '$cookies', '$http',
+    function ($rootScope, $location, $cookies, $http) {
         // keep user logged in after page refresh
-        $rootScope.globals = $cookieStore.get('globals') || {};
+        $rootScope.globals = $cookies.getObject('globals') || {};
         
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
@@ -29,4 +29,18 @@ angular.module('IssueTracking')
         } else {
             $("#createissue").css("display","none");
         }
+        
+        if($scope.authority == 'ROLE_PROPERTYMANAGER') {
+            $scope.pm = "Me";
+            $scope.owner = "Joe";
+            
+        } else if($scope.authority == 'ROLE_OWNER') {
+            $scope.pm = "Mark";
+            $scope.owner = "Me";
+            
+        } else {
+            $scope.pm = "Mark";
+            $scope.owner = "Joe";
+        }
+        
     }]);

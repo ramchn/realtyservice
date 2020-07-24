@@ -42,42 +42,6 @@ angular.module('Signup')
         }         
     }])
 
-.controller('SignupbyPropertyInfoController',
-    ['$scope', '$location', 'RestService', 'AuthService', 'ENV',  
-    function ($scope, $location, RestService, AuthService, ENV) {            
-        
-        var qs = $location.search();
-        $scope.idPropertyInformation = qs.pi;
-        $scope.PersonTypeId = qs.pt;
-        
-        RestService.getGenders(function (genders) {
-            $scope.genders = genders;
-        });
-        
-        $scope.submitForm = function() {
-            
-            $('#signupsubmit').attr('disabled', true);
-            $("#spinner").show();
-            
-            var formData = {              
-              PersonTypeId:$scope.PersonTypeId, EmailAddress:$scope.EmailAddress, UserPassword:AuthService.encodeBase64($scope.UserPassword), 
-              FirstName:$scope.FirstName, MiddleName:$scope.MiddleName,
-              LastName:$scope.LastName, idPropertyInformation: $scope.idPropertyInformation,
-              GenderId:angular.isDefined($scope.Gender) ? $scope.Gender.idGender : null,
-              EmailSubject:"Email Verification", 
-              EmailBody:"Email Verification Link: <a href='" + ENV.PRIMEREALTY_WEB_URL + "/primerealtyweb/index.html#/userverification?token=<VerificationToken>'>Click</a> here to verify your email address."    
-            }
-
-            RestService.signupbyPropertyInfo(formData, function (response) { 
-                $scope.result = response;
-
-                $('#signupsubmit').attr('disabled', false);
-                $("#spinner").hide(); 
-                
-            });              
-        } 
-    }])
-
 .controller('UserVerificationController',
     ['$scope', '$location', 'RestService', 
     function ($scope, $location, RestService) {
@@ -124,8 +88,8 @@ angular.module('Signup')
     }])
 
 .controller('ForgetPasswordController',
-    ['$scope', '$location', 'RestService', 'AuthService',
-    function ($scope, $location, RestService, AuthService) {  
+    ['$scope', 'RestService',
+    function ($scope, RestService) {  
                 
         $scope.getpassword = function () {     
             $('#fpwdsubmit').attr('disabled', true);

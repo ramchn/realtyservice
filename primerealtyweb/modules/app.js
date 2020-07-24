@@ -58,21 +58,6 @@ angular.module('PrimeRealty', [
                 }
             } 
         })    
-    .state('signupbypropertyinfo', {
-            url: '/signupbypropertyinfo',             
-            views: {
-                '': {
-                    controller: 'SignupbyPropertyInfoController',
-                    templateUrl: 'modules/signup/views/signupbypropertyinfo.html'      
-                },
-                'header@signupbypropertyinfo': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },                
-                'footer@signupbypropertyinfo': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            } 
-        })      
     .state('userverification', {
             url: '/userverification',             
             views: {
@@ -194,116 +179,59 @@ angular.module('PrimeRealty', [
                 }
             }  
         }) 
-    .state('addtenant', {
-            url: '/addtenant',             
+    .state('assigntenant', {
+            url: '/assigntenant',             
             views: {
                 '': {
                     controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/addtenant.html'     
+                    templateUrl: 'modules/property/views/assigntenant.html'     
                 },
-                'header@addtenant': {
+                'header@assigntenant': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@addtenant': {
+                'menu@assigntenant': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@addtenant': {
+                'footer@assigntenant': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  
         }) 
-    .state('edittenant', {
-            url: '/edittenant',             
+    .state('assignpm', {
+            url: '/assignpm',             
             views: {
                 '': {
                     controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/edittenant.html'     
+                    templateUrl: 'modules/property/views/assignpm.html'     
                 },
-                'header@edittenant': {
+                'header@assignpm': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@edittenant': {
+                'menu@assignpm': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@edittenant': {
+                'footer@assignpm': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  
         }) 
-    .state('addpm', {
-            url: '/addpm',             
+    .state('assignowner', {
+            url: '/assignowner',             
             views: {
                 '': {
                     controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/addpm.html'     
+                    templateUrl: 'modules/property/views/assignowner.html'     
                 },
-                'header@addpm': {
+                'header@assignowner': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@addpm': {
+                'menu@assignowner': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@addpm': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('editpm', {
-            url: '/editpm',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/editpm.html'     
-                },
-                'header@editpm': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@edittenant': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@editpm': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('addowner', {
-            url: '/addowner',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/addowner.html'     
-                },
-                'header@addowner': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@addowner': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@addowner': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('editowner', {
-            url: '/editowner',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/editowner.html'     
-                },
-                'header@editowner': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@editowner': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@editowner': {
+                'footer@assignowner': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  
@@ -364,6 +292,25 @@ angular.module('PrimeRealty', [
                 }
             }  
         }) 
+    .state('viewitlogs', {
+            url: '/viewitlogs',             
+            views: {
+                '': {
+                    controller: 'IssueTrackingController',
+                    templateUrl: 'modules/issuetracking/views/viewitlogs.html'    
+                },
+                'header@viewitlogs': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@viewitlogs': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@viewitlogs': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
     .state('myinfo', {
             url: '/myinfo',             
             views: {
@@ -402,6 +349,25 @@ angular.module('PrimeRealty', [
                 }
             }  
         }) 
+    .state('editcompany', {
+            url: '/editcompany',             
+            views: {
+                '': {
+                    controller: 'MyinfoController',
+                    templateUrl: 'modules/myinfo/views/editcompany.html'     
+                },
+                'header@editcompany': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@editcompany': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@editcompany': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
     .state('editphone', {
             url: '/editphone',             
             views: {
@@ -436,6 +402,25 @@ angular.module('PrimeRealty', [
                     templateUrl: 'modules/template/views/menu.html'        
                 },
                 'footer@editemail': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('editpassword', {
+            url: '/editpassword',             
+            views: {
+                '': {
+                    controller: 'MyinfoController',
+                    templateUrl: 'modules/myinfo/views/editpassword.html'    
+                },
+                'header@editpassword': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@editpassword': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@editpassword': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  

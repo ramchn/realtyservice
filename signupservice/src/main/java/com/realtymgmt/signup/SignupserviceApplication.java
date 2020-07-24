@@ -79,9 +79,7 @@ public class SignupserviceApplication {
 	//sign up service
 	@PostMapping("/signupbypropertyinfo")
 	private Map<String, Object> tenantSignUp(@RequestParam Integer PersonTypeId, @RequestParam String EmailAddress, 
-									@RequestParam String UserPassword, @RequestParam String FirstName, 
-									@RequestParam(required = false) String LastName, @RequestParam(required = false) String MiddleName, 
-									@RequestParam(required = false) Integer GenderId, @RequestParam Integer idPropertyInformation, 
+									@RequestParam String UserPassword, @RequestParam Integer idPropertyInformation, 
 									@RequestParam String EmailSubject, @RequestParam String EmailBody) {
 		
 		Map<String, Object> pipParams = new HashMap<String, Object>();
@@ -90,7 +88,7 @@ public class SignupserviceApplication {
 		
 		// database entry upto Person
 		Map<String, Object> resultMap = createPerson(PersonTypeId, EmailAddress, 
-						UserPassword, FirstName, LastName, MiddleName, GenderId, VerificationToken);
+						UserPassword, null, null, null, null, VerificationToken);
 		
 		// database entry for PropertyInformationPerson
 		if (resultMap.get("idPerson") != null) {			

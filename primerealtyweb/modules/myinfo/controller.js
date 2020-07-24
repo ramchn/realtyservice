@@ -2,10 +2,10 @@
 
 angular.module('Myinfo')
 
-.run(['$rootScope', '$location', '$cookieStore', '$http',
-    function ($rootScope, $location, $cookieStore, $http) {
+.run(['$rootScope', '$location', '$cookies', '$http',
+    function ($rootScope, $location, $cookies, $http) {
         // keep user logged in after page refresh
-        $rootScope.globals = $cookieStore.get('globals') || {};
+        $rootScope.globals = $cookies.getObject('globals') || {};
         
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
@@ -22,5 +22,10 @@ angular.module('Myinfo')
 .controller('MyinfoController',
     ['$scope', '$rootScope', 
     function ($scope, $rootScope) {        
-        //$scope.user = $rootScope.globals.currentUser;
+        $scope.authority = $rootScope.globals.currentUser.authority;
+        if($scope.authority == 'ROLE_COMPANYOWNER') {
+            $("#companyowner").css("display","block");
+        } else {
+            $("#companyowner").css("display","none");
+        }
     }]);

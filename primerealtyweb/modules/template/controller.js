@@ -2,21 +2,14 @@
 
 angular.module('Template')
 
-.run(['$rootScope', '$location', '$cookieStore', '$http',
-    function ($rootScope, $location, $cookieStore, $http) {
+.run(['$rootScope', '$location', '$cookies', '$http',
+    function ($rootScope, $location, $cookies, $http) {
         // keep user logged in after page refresh
-        $rootScope.globals = $cookieStore.get('globals') || {};
+        $rootScope.globals = $cookies.getObject('globals') || {};
         
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
         }
-
-        $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in
-            if ($location.path() == '/menu' && !$rootScope.globals.currentUser) {
-                $location.path('/signin');
-            }
-        });
     }])
 
 .controller('MenuController',
