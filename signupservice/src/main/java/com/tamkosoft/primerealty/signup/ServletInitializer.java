@@ -1,4 +1,4 @@
-package com.realtymgmt.signup;
+package com.tamkosoft.primerealty.signup;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -7,7 +7,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(SignupserviceApplication.class);
+		return application.sources(SignupApplication.class);
 	}
 
 }

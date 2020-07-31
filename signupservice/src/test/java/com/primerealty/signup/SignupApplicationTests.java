@@ -1,10 +1,10 @@
-package com.realtymgmt.signup;
+package com.primerealty.signup;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SignupserviceApplicationTests {
+class SignupApplicationTests {
 
 	@Test
 	void contextLoads() {
