@@ -5,7 +5,7 @@ angular.module('Signup')
 .controller('SignupController',
     ['$scope', '$location', 'RestService', 'AuthService', 'ENV',  
     function ($scope, $location, RestService, AuthService, ENV) {         
-            
+         
         RestService.getPersonTypes(function (personTypes) {
             // trim tenant from person type list
             for(var i=0;i<personTypes.length;i++){                
@@ -19,18 +19,17 @@ angular.module('Signup')
         RestService.getGenders(function (genders) {
             $scope.genders = genders;
         }); 
-    
+        
         $scope.submitForm = function() {
-            
+
             $('#signupsubmit').attr('disabled', true);
             $("#spinner").show();
-            
+                        
             var formData = {              
-              PersonTypeId:$scope.selectedPersonType.idPersonType, EmailAddress:$scope.EmailAddress, UserPassword:AuthService.encodeBase64($scope.UserPassword), 
-              FirstName:$scope.FirstName, MiddleName:$scope.MiddleName,       LastName:$scope.LastName, 
-              GenderId:angular.isDefined($scope.Gender) ? $scope.Gender.idGender : null,
-              EmailSubject:"Email Verification", 
-              EmailBody:"Email Verification Link: <a href='" + ENV.PRIMEREALTY_WEB_URL + "/primerealtyweb/index.html#/userverification?token=<VerificationToken>'>Click</a> here to verify your email address."    
+              emailAddress:$scope.EmailAddress, userPassword:$scope.UserPassword, 
+              firstName:$scope.FirstName, middleName:$scope.MiddleName,       lastName:$scope.LastName, 
+              genderId:angular.isDefined($scope.Gender) ? $scope.Gender.idGender : null, 
+              personTypeId:$scope.selectedPersonType.idPersonType
             }
 
             RestService.signUp(formData, function (response) {      
@@ -39,6 +38,7 @@ angular.module('Signup')
                 $('#signupsubmit').attr('disabled', false);
                 $("#spinner").hide();
             });
+
         }         
     }])
 
@@ -71,7 +71,7 @@ angular.module('Signup')
             $("#spinner").show();
             
             var formData = {  
-                EmailAddress:$scope.username, UserPassword:AuthService.encodeBase64($scope.password)
+                emailAddress:$scope.username, userPassword:$scope.password
             }
             
             RestService.signIn(formData, function (auth) {
@@ -96,9 +96,7 @@ angular.module('Signup')
             $("#spinner").show();
             
             var formData = {  
-                EmailAddress:$scope.username,
-                EmailSubject:"Password for login",
-                EmailBody: "Password is: <UserPassword>"
+                emailAddress:$scope.username
             }
             
             RestService.retrievePassword(formData, function (response) {                

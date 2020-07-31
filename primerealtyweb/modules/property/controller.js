@@ -24,8 +24,7 @@ angular.module('Property')
     function ($scope, $rootScope, AuthService) {        
          
         $scope.authority = $rootScope.globals.currentUser.authority;
-        
-        $scope.signupbypropertyinfolink = "http://localhost/~ramamoorthy/primerealtyweb/index.html#/signupbypropertyinfo?" + AuthService.encodeBase64("pi=1&pt=2");
+        $scope.username = $rootScope.globals.currentUser.username;
         
         if($scope.authority == 'ROLE_OWNER' || $scope.authority == 'ROLE_COMPANYOWNER') {            
             $("#ownertable").css("display","none");
@@ -44,7 +43,7 @@ angular.module('Property')
             
         } 
         
-        $scope.idPropertyInformation = 1; // should be dynamically fetched from backend
+        $scope.PropertyInformationId = 1; // should be dynamically fetched from backend
         $scope.PersonTypeId = 2; // should be dynamically fetched from backend
 
         $scope.submitForm = function() {
@@ -53,10 +52,8 @@ angular.module('Property')
             $("#spinner").show();
             
             var formData = {              
-              PersonTypeId:$scope.PersonTypeId, EmailAddress:$scope.EmailAddress, UserPassword:AuthService.encodeBase64("password"),
-              idPropertyInformation: $scope.idPropertyInformation,
-              EmailSubject:"Default Password and Email Verification", 
-              EmailBody:"Default password: password<br><br>Email Verification Link: <a href='" + ENV.PRIMEREALTY_WEB_URL + "/primerealtyweb/index.html#/userverification?token=<VerificationToken>'>Click</a> here to verify your email address."    
+              emailAddress:$scope.username, personTypeId:$scope.PersonTypeId, 
+              propertyInformationId: $scope.PropertyInformationId
             }
 
             RestService.signupbyPropertyInfo(formData, function (response) { 

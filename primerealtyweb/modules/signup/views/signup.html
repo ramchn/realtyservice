@@ -4,7 +4,7 @@
 <!-- header ends -->    
     
 <!-- content starts -->
-<form ng-submit="submitForm()">
+<form name="signupForm" novalidate ng-submit="signupForm.$valid&&submitForm()">
 <h4>Sign Up</h4>  
 <span>{{result.message}}</span> <span>{{result.emailmessage}}</span>
 <div class="row-padding">
@@ -16,27 +16,29 @@
                      <select ng-model="selectedPersonType" class="textfield" ng-options="personType.PersonType for personType in personTypes" required> 
                      </select>
                  </td>
+                 <td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.emailAddress.$error.required">Required!</span></td>
              </tr>    
              <tr>
-                 <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="EmailAddress" required/></td>
+                 <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="EmailAddress" name="emailAddress" ng-maxlength="45" required/></td><td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.emailAddress.$error.required">Required!</span><span style="color:Red" ng-show="signupForm.emailAddress.$dirty&&signupForm.emailAddress.$invalid">Not a valid Email</span><span style="color:Red" ng-show="signupForm.emailAddress.$dirty&&signupForm.emailAddress.$error.maxlength">Maximum 45 alphabets allowed</span></td>
              </tr>                  
              <tr>
-                 <td>Password</td><td colspan="2"><input type="password" class="textfield" ng-model="UserPassword" required/></td>
+                 <td>Password</td><td colspan="2"><input type="password" class="textfield" ng-model="UserPassword" name="userPassword" ng-minlength="3" ng-maxlength="45" ng-pattern="/^[A-Za-z!@#$%^&*]*$/" required/></td><td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.userPassword.$error.required">Required!</span><span style="color:Red" ng-show="signupForm.userPassword.$dirty&&signupForm.userPassword.$error.pattern">Alphanumeric and these special characters !@#$%^&* allowed</span><span style="color:Red" ng-show="signupForm.userPassword.$dirty&&signupForm.userPassword.$error.minlength">Minimum 3 alphanumeric allowed</span><span style="color:Red" ng-show="signupForm.userPassword.$dirty&&signupForm.userPassword.$error.maxlength">Maximum 45 alphanumeric allowed</span></td>
              </tr>
              <tr>
-                 <td>First Name</td><td colspan="2"><input type="text" class="textfield" ng-model="FirstName" required/></td>
+                 <td>First Name</td><td colspan="2"><input type="text" class="textfield" ng-model="FirstName" name="firstName" ng-minlength="2" ng-maxlength="45" ng-pattern="/^[A-Za-z\.\s]*$/" value=""/></td><td><span style="color:Red" ng-show="signupForm.firstName.$dirty&&signupForm.firstName.$error.pattern">Alphabets, dot and space allowed</span><span style="color:Red" ng-show="signupForm.firstName.$dirty&&signupForm.firstName.$error.minlength">Maximum 2 alphabets required</span><span style="color:Red" ng-show="signupForm.firstName.$dirty&&signupForm.firstName.$error.maxlength">Maximum 45 alphabets allowed</span></td>
              </tr>
              <tr>
-                 <td>Middle Name</td><td colspan="2"><input type="text" class="textfield" ng-model="MiddleName" value=""/></td>
+                 <td>Middle Name</td><td colspan="2"><input type="text" class="textfield" ng-model="MiddleName" name="middleName" ng-maxlength="45" ng-pattern="/^[A-Za-z\.\s]*$/" value=""/></td><td><span style="color:Red" ng-show="signupForm.middleName.$dirty&&signupForm.middleName.$error.pattern">Alphabets, . and space allowed</span><span style="color:Red" ng-show="signupForm.middleName.$dirty&&signupForm.middleName.$error.maxlength">Maximum 45 alphabets allowed</span></td>
              </tr>
              <tr>
-                 <td>Last Name</td><td colspan="2"><input type="text" class="textfield" ng-model="LastName" value=""/></td>
+                 <td>Last Name</td><td colspan="2"><input type="text" class="textfield" ng-model="LastName" name="lastName" ng-minlength="2" ng-maxlength="45" ng-pattern="/^[A-Za-z\.\s]*$/" value=""/></td><td><span style="color:Red" ng-show="signupForm.lastName.$dirty&&signupForm.lastName.$error.pattern">Alphabets, . and space allowed</span><span style="color:Red" ng-show="signupForm.lastName.$dirty&&signupForm.lastName.$error.minlength">Maximum 2 alphabets required</span><span style="color:Red" ng-show="signupForm.lastName.$dirty&&signupForm.lastName.$error.maxlength">Maximum 45 alphabets allowed</span></td>
              </tr>
              <tr>
                  <td>Gender</td>
                  <td colspan="2"><select ng-model="Gender" class="textfield" ng-options="gender.Gender for gender in genders">                        
                      </select>
                  </td>
+                 <td>&nbsp;</td>
              </tr>                  
              <tr>
                <td><button class="button" onclick="window.location.href='#!/'">Home</button></td>
@@ -44,6 +46,7 @@
                     <input type="submit" id="signupsubmit" class="button" value="Sign Up"/>                    
                  </td>
                  <td><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></td>
+                 <td>&nbsp;</td>
            </tr> 
          </table>       
   </div>

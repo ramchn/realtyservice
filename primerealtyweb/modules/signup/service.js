@@ -16,23 +16,23 @@ angular.module('Signup')
         }
         
         service.signUp = function (formData, callback) {
-            service.httpPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);
+            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);            
         }
-        
+                
         service.signupbyPropertyInfo = function (formData, callback) {
-            service.httpPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
+            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
         }
         
         service.userVerification = function (formData, callback) {
-            service.httpPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
+            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
         }
         
         service.signIn = function (formData, callback) {            
-            service.httpPost(ENV.SIGNUP_API_URL + '/signin', formData, callback);              
+            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signin', formData, callback);              
         }   
         
         service.retrievePassword = function (formData, callback) {            
-            service.httpPost(ENV.SIGNUP_API_URL + '/signin/retrievepassword', formData, callback);          
+            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signin/retrievepassword', formData, callback);          
         }         
         
         service.httpGet = function(url, callback) {
@@ -44,20 +44,15 @@ angular.module('Signup')
             });   
         }
         
-        service.httpPost = function(url, formData, callback) {
-            $http({
-                method: 'POST',
-                url: url,
-                params: formData,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}                
-            })
+        service.httpJsonPost = function(url, formData, callback) {
+            $http.post(url, formData)
             .then(function (response) {
                 callback(response.data);
             }, function (response) {
                 callback(response);
             });  
         }
-        
+                
         return service;
     }])
 
