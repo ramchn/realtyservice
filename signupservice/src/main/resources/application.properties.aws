@@ -1,0 +1,24 @@
+spring.datasource.url=jdbc:mysql://primerealty.ckgvwmcvleay.us-west-1.rds.amazonaws.com:3306/RealtyDB
+spring.datasource.username=realtyuser
+spring.datasource.password=Realtypasswd12#
+
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=587
+
+email.address=tamkosoft@gmail.com
+email.password=India123$
+
+verification.email.subject=Email Verification
+verification.email.content=Email Verification Link: <a href='http://primerealty.us-west-1.elasticbeanstalk.com/index.html#!/userverification?token=<VerificationToken>'>Click</a> here to verify your email address.
+
+
+passwordverification.email.subject=Default Password and Email Verification
+passwordverification.email.content=Default password: password<br><br>Email Verification Link: <a href='http://primerealty.us-west-1.elasticbeanstalk.com/index.html#!/userverification?token=<VerificationToken>'>Click</a> here to verify your email address.  
+              
+forgetpassword.email.subject=Password for login
+forgetpassword.email.content=Password is: <UserPassword> 
+  
+                
+logging.level.com.tamkosoft.primerealty=DEBUG
