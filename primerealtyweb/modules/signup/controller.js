@@ -3,10 +3,10 @@
 angular.module('Signup')
 
 .controller('SignupController',
-    ['$scope', '$location', 'RestService', 'AuthService', 'ENV',  
-    function ($scope, $location, RestService, AuthService, ENV) {         
+    ['$scope', '$location', 'SignupService', 'AuthService', 'ENV',  
+    function ($scope, $location, SignupService, AuthService, ENV) {         
          
-        RestService.getPersonTypes(function (personTypes) {
+        SignupService.getPersonTypes(function (personTypes) {
             // trim tenant from person type list
             for(var i=0;i<personTypes.length;i++){                
                if(personTypes[i].PersonType == "Tenant") {
@@ -16,7 +16,7 @@ angular.module('Signup')
             $scope.personTypes = personTypes;            
         });
         
-        RestService.getGenders(function (genders) {
+        SignupService.getGenders(function (genders) {
             $scope.genders = genders;
         }); 
         
@@ -32,7 +32,7 @@ angular.module('Signup')
               personTypeId:$scope.selectedPersonType.idPersonType
             }
 
-            RestService.signUp(formData, function (response) {      
+            SignupService.signUp(formData, function (response) {      
                 $scope.result = response;
             
                 $('#signupsubmit').attr('disabled', false);
@@ -43,8 +43,8 @@ angular.module('Signup')
     }])
 
 .controller('UserVerificationController',
-    ['$scope', '$location', 'RestService', 
-    function ($scope, $location, RestService) {
+    ['$scope', '$location', 'SignupService', 
+    function ($scope, $location, SignupService) {
         
         var qs = $location.search();
            
@@ -52,15 +52,15 @@ angular.module('Signup')
           token: qs.token             
         }
 
-        RestService.userVerification(formData, function (response) {
+        SignupService.userVerification(formData, function (response) {
              $scope.result = response;
         }); 
         
     }])
 
 .controller('SigninController',
-    ['$scope', '$location', 'RestService', 'AuthService',
-    function ($scope, $location, RestService, AuthService) {  
+    ['$scope', '$location', 'SignupService', 'AuthService',
+    function ($scope, $location, SignupService, AuthService) {  
         
         // reset login status
         AuthService.ClearCredentials();
@@ -73,11 +73,23 @@ angular.module('Signup')
             var formData = {  
                 emailAddress:$scope.username, userPassword:$scope.password
             }
-            
-            RestService.signIn(formData, function (auth) {
+                        
+            SignupService.signIn(formData, function (auth) {
                 $("#spinner").hide();
-                if (auth.Authenticated) {
-                    AuthService.SetCredentials($scope.username, $scope.password, auth.idPerson, auth.Authority, auth.FirstName, auth.LastName);
+                if (auth.Authenticated) {                    
+
+                    var PropertyInformationIds = new Array();
+                    for(var i = 0; i < auth.PropertyInformationIds.length; i++) {
+                        PropertyInformationIds[i] = auth.PropertyInformationIds[i].idPropertyInformation;                       
+                    } 
+                    
+                    if(PropertyInformationIds.length == 0 && angular.isDefined(auth.PropertyInformationPersonIds)) {                 
+                        for(var i = 0; i < auth.PropertyInformationPersonIds.length; i++) {          
+                            PropertyInformationIds[i] = auth.PropertyInformationPersonIds[i].idPropertyInformation;
+                        }
+                    }
+
+                    AuthService.SetCredentials($scope.username, $scope.password, auth.idPerson, auth.Authority, auth.FirstName, auth.LastName, PropertyInformationIds);
                     $location.path('/home');
                 } else {
                     $scope.error = "either email not verified or invalid credentials";
@@ -88,8 +100,8 @@ angular.module('Signup')
     }])
 
 .controller('ForgetPasswordController',
-    ['$scope', 'RestService',
-    function ($scope, RestService) {  
+    ['$scope', 'SignupService',
+    function ($scope, SignupService) {  
                 
         $scope.getpassword = function () {     
             $('#fpwdsubmit').attr('disabled', true);
@@ -99,7 +111,7 @@ angular.module('Signup')
                 emailAddress:$scope.username
             }
             
-            RestService.retrievePassword(formData, function (response) {                
+            SignupService.retrievePassword(formData, function (response) {                
                 $scope.result = response; 
                 
                 $('#fpwdsubmit').attr('disabled', false);

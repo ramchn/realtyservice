@@ -2,56 +2,38 @@
 
 angular.module('Signup')
 
-.factory('RestService',  
-    ['$http', 'ENV', 
-    function ($http, ENV) {
+.factory('SignupService',  
+    ['$http', 'ENV', 'RestService',  
+    function ($http, ENV, RestService) {
         var service = {};
         
         service.getPersonTypes = function (callback) {
-            service.httpGet(ENV.SIGNUP_API_URL + '/persontypes', callback);               
+            RestService.httpGet(ENV.SIGNUP_API_URL + '/persontypes', callback);               
         }
         
         service.getGenders = function (callback) {
-            service.httpGet(ENV.SIGNUP_API_URL + '/genders', callback);                   
+            RestService.httpGet(ENV.SIGNUP_API_URL + '/genders', callback);                   
         }
         
         service.signUp = function (formData, callback) {
-            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);            
+            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);            
         }
                 
         service.signupbyPropertyInfo = function (formData, callback) {
-            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
+            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
         }
         
         service.userVerification = function (formData, callback) {
-            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
+            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
         }
         
         service.signIn = function (formData, callback) {            
-            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signin', formData, callback);              
+            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signin', formData, callback);              
         }   
         
         service.retrievePassword = function (formData, callback) {            
-            service.httpJsonPost(ENV.SIGNUP_API_URL + '/signin/retrievepassword', formData, callback);          
+            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signin/retrievepassword', formData, callback);          
         }         
-        
-        service.httpGet = function(url, callback) {
-            $http.get(url)
-            .then(function (response) {
-                callback(response.data);
-            }, function (response) {
-                callback(response);
-            });   
-        }
-        
-        service.httpJsonPost = function(url, formData, callback) {
-            $http.post(url, formData)
-            .then(function (response) {
-                callback(response.data);
-            }, function (response) {
-                callback(response);
-            });  
-        }
                 
         return service;
     }])
@@ -61,7 +43,7 @@ angular.module('Signup')
     function (Base64, $http, $cookies, $rootScope) {
         var service = {};
 
-        service.SetCredentials = function (username, password, personid, authority, firstname, lastname) {
+        service.SetCredentials = function (username, password, personid, authority, firstname, lastname, propertyInformationIds) {
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
@@ -71,7 +53,8 @@ angular.module('Signup')
                     personid: personid,
                     authority: authority,
                     firstname: firstname,
-                    lastname: lastname
+                    lastname: lastname,
+                    propertyInformationIds: propertyInformationIds
                 }
             }
 

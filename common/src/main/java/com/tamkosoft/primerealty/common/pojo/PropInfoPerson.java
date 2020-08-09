@@ -4,6 +4,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class PropInfoPerson extends Person {
+	
+	public PropInfoPerson() {
+		
+	}
 
 	public PropInfoPerson(String emailAddress, 
 			String userPassword, String firstName, 

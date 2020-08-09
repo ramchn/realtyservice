@@ -1,0 +1,41 @@
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewissuereq">Issue Request</a> > Create</p>   
+<span>{{result.message}}</span>
+<div class="row-padding">
+  <div>     
+      <form name="issueRequestForm" novalidate ng-submit="issueRequestForm.$valid&&submitForm()">
+      <table>
+          <tr><td>Issue Category</td>
+              <td colspan="2">
+                  <select ng-model="selectedIssueCategory" class="textfield" ng-options="issueCategory.IssueCategory for issueCategory in issueCategories" required> 
+                     </select>
+              </td></tr>
+          <tr><td>Issue</td><td colspan="2"><input type="textfield" class="textfield" name="issue" ng-model="Issue" value="" required/></td></tr>
+          <tr><td>Issue Description</td><td colspan="2"><textarea class="textfield" name="issueDescription" ng-model="IssueDescription" rows="4"></textarea></td></tr>
+          <tr><td>Attachment</td><td colspan="2"><input type="file" class="textfield" id="attachment" name="attachment" file-model="Attachment"/><br></td></tr>
+          <tr><td>&nbsp;</td><td colspan="2"><small>supported files (images, pdf) and <br>file size less than 5MB</small></td></tr>
+          <tr><td colspan="3"></td></tr>
+          <tr>
+               <td><button class="button" onclick="window.location.href='#!/viewissuereq'">Back</button></td>
+                <td>
+                    <input type="submit" class="button" id="issuerequestsubmit" value="Save"/>         
+                 </td>
+                 <td><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></td>
+           </tr>                   
+      </table>   
+      </form>
+  </div>
+</div>
+
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

@@ -26,11 +26,15 @@ dependencies {
     
     // project dependency
     implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.37'
 	implementation 'com.sun.mail:jakarta.mail:1.6.5'
 	implementation 'org.slf4j:slf4j-api:1.7.30'
 	implementation 'org.springframework:spring-beans:5.2.8.RELEASE'
 	implementation 'org.springframework:spring-context:5.2.8.RELEASE'
 	implementation 'org.springframework:spring-core:5.2.8.RELEASE'
+	implementation 'org.springframework:spring-jdbc:5.2.8.RELEASE'
+	implementation 'org.springframework:spring-web:5.2.8.RELEASE'
+	
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'

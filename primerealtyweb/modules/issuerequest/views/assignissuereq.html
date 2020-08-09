@@ -1,0 +1,12 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 5px;}
+    table.inlineTable{display:inline;}
+</style>
+<!-- content starts -->
+<p>Assign Service Provider for <b>#IR{{issueid}}</b></p>
+<p>{{result.message}}</p>
+<table><th>First Name</th><th>Last Name</th><th>Yrs of Exp</th><th>Areas of Expertise</th><th>Area Coverage</th><th>Assign/Reassign</th><tr ng-repeat="serviceprovider in serviceproviders"><td>{{serviceprovider.FirstName}}</td><td>{{serviceprovider.LastName}}</td><td>{{serviceprovider.YearsOfExperience}}</td><td>{{serviceprovider.AreasOfExpertise}}</td><td>{{serviceprovider.AreaCoverage}}</td><td ng-if="serviceprovider.idServiceProvider == assignedperson.idServiceProvider">Assigned</td><td ng-if="serviceprovider.idServiceProvider != assignedperson.idServiceProvider" style="text-decoration:underline;color:blue;cursor:pointer" ng-click="assignPerson(serviceprovider.idServiceProvider)">Assign</td></tr>
+</table><div><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></div>
+<!-- content ends -->
+

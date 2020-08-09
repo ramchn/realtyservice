@@ -6,8 +6,9 @@ angular.module('Signup', []);
 angular.module('Template', []);
 angular.module('Home', []);
 angular.module('Property', []);
-angular.module('IssueTracking', []);
+angular.module('IssueRequest', []);
 angular.module('Myinfo', []);
+angular.module('Rest', []);
 angular.module('number', []);
 
 angular.module('PrimeRealty', [
@@ -16,8 +17,9 @@ angular.module('PrimeRealty', [
     'Template',
     'Home',    
     'Property',
-    'IssueTracking',
+    'IssueRequest',
     'Myinfo',
+    'Rest',
     'ui.router',
     'ngCookies',
     'number'
@@ -254,60 +256,78 @@ angular.module('PrimeRealty', [
                 }
             }  
         }) 
-    .state('createit', {
-            url: '/createit',             
+    .state('createissuereq', {
+            url: '/createissuereq',             
             views: {
                 '': {
-                    controller: 'IssueTrackingController',
-                    templateUrl: 'modules/issuetracking/views/createit.html'    
+                    controller: 'CreateIssueRequestController',
+                    templateUrl: 'modules/issuerequest/views/createissuereq.html'    
                 },
-                'header@createit': {
+                'header@createissuereq': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@createit': {
+                'menu@createissuereq': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@createit': {
+                'footer@createissuereq': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  
         }) 
-    .state('viewit', {
-            url: '/viewit',             
+    .state('viewissuereq', {
+            url: '/viewissuereq',             
             views: {
                 '': {
-                    controller: 'IssueTrackingController',
-                    templateUrl: 'modules/issuetracking/views/viewit.html'    
+                    controller: 'ViewIssueRequestController',
+                    templateUrl: 'modules/issuerequest/views/viewissuereq.html'    
                 },
-                'header@viewit': {
+                'header@viewissuereq': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@viewit': {
+                'menu@viewissuereq': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@viewit': {
+                'footer@viewissuereq': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  
         }) 
-    .state('viewitlogs', {
-            url: '/viewitlogs',             
+    .state('viewattachment', {
+            url: '/viewattachment',             
             views: {
                 '': {
-                    controller: 'IssueTrackingController',
-                    templateUrl: 'modules/issuetracking/views/viewitlogs.html'    
+                    controller: 'ViewAttachmentController',
+                    templateUrl: 'modules/issuerequest/views/viewattachment.html'    
+                }
+            }  
+        }) 
+    .state('viewissuereqlogs', {
+            url: '/viewissuereqlogs',             
+            views: {
+                '': {
+                    controller: 'ViewIssueRequestLogsController',
+                    templateUrl: 'modules/issuerequest/views/viewissuereqlogs.html'    
                 },
-                'header@viewitlogs': {
+                'header@viewissuereqlogs': {
                     templateUrl: 'modules/template/views/header.html'        
                 },
-                'menu@viewitlogs': {
+                'menu@viewissuereqlogs': {
                     controller: 'MenuController',
                     templateUrl: 'modules/template/views/menu.html'        
                 },
-                'footer@viewitlogs': {
+                'footer@viewissuereqlogs': {
                     templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        })              
+    .state('assignissuereq', {
+            url: '/assignissuereq',             
+            views: {
+                '': {
+                    controller: 'AssignIssueRequestController',
+                    templateUrl: 'modules/issuerequest/views/assignissuereq.html'    
                 }
             }  
         }) 
