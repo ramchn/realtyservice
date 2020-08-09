@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `RealtyDB` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `RealtyDB`;
--- MySQL dump 10.13  Distrib 5.7.30, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.31, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: RealtyDB
 -- ------------------------------------------------------
--- Server version	5.7.30-0ubuntu0.18.04.1
+-- Server version	5.7.31-0ubuntu0.18.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,10 +31,8 @@ CREATE TABLE `Access` (
   PRIMARY KEY (`idAccess`),
   UNIQUE KEY `cn_Access_Unique` (`User_EmailAddress`),
   CONSTRAINT `fk_Access_User` FOREIGN KEY (`User_EmailAddress`) REFERENCES `User` (`EmailAddress`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-
 
 --
 -- Table structure for table `Address`
@@ -48,7 +46,7 @@ CREATE TABLE `Address` (
   `Address1` varchar(100) DEFAULT NULL,
   `Address2` varchar(100) DEFAULT NULL,
   `Address3` varchar(100) DEFAULT NULL,
-  `Zip` int(5) DEFAULT NULL,
+  `Zip` int(5) unsigned zerofill DEFAULT NULL,
   `CityName` varchar(100) DEFAULT NULL,
   `StateCode` varchar(2) DEFAULT NULL,
   `CountryCode` varchar(2) DEFAULT NULL,
@@ -60,9 +58,8 @@ CREATE TABLE `Address` (
   KEY `fk_Address_AddressType` (`AddressType_idAddressType`),
   CONSTRAINT `fk_Address_AddressType` FOREIGN KEY (`AddressType_idAddressType`) REFERENCES `AddressType` (`idAddressType`),
   CONSTRAINT `fk_Address_Person` FOREIGN KEY (`Person_idPerson`) REFERENCES `Person` (`idPerson`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `AddressType`
@@ -87,6 +84,22 @@ LOCK TABLES `AddressType` WRITE;
 INSERT INTO `AddressType` VALUES (1,'Shipping'),(2,'Billing'),(3,'Mailing'),(4,'Property');
 /*!40000 ALTER TABLE `AddressType` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `Attachment`
+--
+
+DROP TABLE IF EXISTS `Attachment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Attachment` (
+  `idAttachment` int(11) NOT NULL AUTO_INCREMENT,
+  `Attachment` longblob NOT NULL,
+  `AttachmentName` varchar(100) NOT NULL,
+  `AttachmentType` varchar(100) NOT NULL,
+  PRIMARY KEY (`idAttachment`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `Company`
@@ -127,7 +140,7 @@ CREATE TABLE `Email` (
   KEY `fk_Email_Person` (`Person_idPerson`),
   CONSTRAINT `fk_Email_EmailType` FOREIGN KEY (`EmailType_idEmailType`) REFERENCES `EmailType` (`idEmailType`),
   CONSTRAINT `fk_Email_Person` FOREIGN KEY (`Person_idPerson`) REFERENCES `Person` (`idPerson`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,22 +203,21 @@ CREATE TABLE `Issue` (
   `idIssue` int(11) NOT NULL AUTO_INCREMENT,
   `Issue` varchar(100) NOT NULL,
   `IssueDescription` varchar(255) DEFAULT NULL,
-  `Attachment` blob,
-  `IssueStatus_idIssueStatus` int(11) NOT NULL,
+  `Attachment_idAttachment` int(11) DEFAULT NULL,
   `IssueCategory_idIssueCategory` int(11) NOT NULL,
   `CreatePerson_idPerson` int(11) NOT NULL,
   `PropertyInformation_idPropertyInformation` int(11) NOT NULL,
   `CreatedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`idIssue`),
-  KEY `IssueStatus_idIssueStatus` (`IssueStatus_idIssueStatus`),
   KEY `IssueCategory_idIssueCategory` (`IssueCategory_idIssueCategory`),
   KEY `CreatePerson_idPerson` (`CreatePerson_idPerson`),
   KEY `PropertyInformation_idPropertyInformation` (`PropertyInformation_idPropertyInformation`),
+  KEY `fk_Issue_Attachment` (`Attachment_idAttachment`),
+  CONSTRAINT `fk_Issue_Attachment` FOREIGN KEY (`Attachment_idAttachment`) REFERENCES `Attachment` (`idAttachment`),
   CONSTRAINT `fk_Issue_CreatePerson` FOREIGN KEY (`CreatePerson_idPerson`) REFERENCES `Person` (`idPerson`),
   CONSTRAINT `fk_Issue_IssueCategory` FOREIGN KEY (`IssueCategory_idIssueCategory`) REFERENCES `IssueCategory` (`idIssueCategory`),
-  CONSTRAINT `fk_Issue_IssueStatus` FOREIGN KEY (`IssueStatus_idIssueStatus`) REFERENCES `IssueStatus` (`idIssueStatus`),
   CONSTRAINT `fk_Issue_PropertyInformation` FOREIGN KEY (`PropertyInformation_idPropertyInformation`) REFERENCES `PropertyInformation` (`idPropertyInformation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,6 +246,29 @@ INSERT INTO `IssueCategory` VALUES (5,'Appliances'),(8,'Electrical'),(4,'Floorin
 UNLOCK TABLES;
 
 --
+-- Table structure for table `IssueDetail`
+--
+
+DROP TABLE IF EXISTS `IssueDetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `IssueDetail` (
+  `idIssueDetail` int(11) NOT NULL AUTO_INCREMENT,
+  `Issue_idIssue` int(11) NOT NULL,
+  `Status_idIssueStatus` int(11) NOT NULL,
+  `StatusUpdate_idPerson` int(11) NOT NULL,
+  `StatusUpdateDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`idIssueDetail`),
+  KEY `fk_IssueDetail_Issue` (`Issue_idIssue`),
+  KEY `fk_IssueDetail_IssueStatus` (`Status_idIssueStatus`),
+  KEY `fk_IssueDetail_StatusUpdate_Person` (`StatusUpdate_idPerson`),
+  CONSTRAINT `fk_IssueDetail_Issue` FOREIGN KEY (`Issue_idIssue`) REFERENCES `Issue` (`idIssue`),
+  CONSTRAINT `fk_IssueDetail_IssueStatus` FOREIGN KEY (`Status_idIssueStatus`) REFERENCES `IssueStatus` (`idIssueStatus`),
+  CONSTRAINT `fk_IssueDetail_StatusUpdate_Person` FOREIGN KEY (`StatusUpdate_idPerson`) REFERENCES `Person` (`idPerson`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `IssueLog`
 --
 
@@ -243,16 +278,18 @@ DROP TABLE IF EXISTS `IssueLog`;
 CREATE TABLE `IssueLog` (
   `idIssueLog` int(11) NOT NULL AUTO_INCREMENT,
   `Issue_idIssue` int(11) NOT NULL,
-  `CreatedPerson_idPerson` int(11) NOT NULL,
-  `Log` longtext,
-  `Attachment` blob,
+  `CreatePerson_idPerson` int(11) NOT NULL,
+  `Log` longtext NOT NULL,
+  `Attachment_idAttachment` int(11) DEFAULT NULL,
   `CreatedDate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`idIssueLog`),
-  KEY `fk_IssueLog_Person` (`CreatedPerson_idPerson`),
+  KEY `fk_IssueLog_Person` (`CreatePerson_idPerson`),
   KEY `fk_IssueLog_Issue` (`Issue_idIssue`),
+  KEY `fk_IssueLog_Attachment` (`Attachment_idAttachment`),
+  CONSTRAINT `fk_IssueLog_Attachment` FOREIGN KEY (`Attachment_idAttachment`) REFERENCES `Attachment` (`idAttachment`),
   CONSTRAINT `fk_IssueLog_Issue` FOREIGN KEY (`Issue_idIssue`) REFERENCES `Issue` (`idIssue`),
-  CONSTRAINT `fk_IssueLog_Person` FOREIGN KEY (`CreatedPerson_idPerson`) REFERENCES `Person` (`idPerson`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_IssueLog_Person` FOREIGN KEY (`CreatePerson_idPerson`) REFERENCES `Person` (`idPerson`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +304,7 @@ CREATE TABLE `IssueStatus` (
   `IssueStatus` varchar(45) NOT NULL,
   PRIMARY KEY (`idIssueStatus`),
   UNIQUE KEY `IssueStatus` (`IssueStatus`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +313,7 @@ CREATE TABLE `IssueStatus` (
 
 LOCK TABLES `IssueStatus` WRITE;
 /*!40000 ALTER TABLE `IssueStatus` DISABLE KEYS */;
-INSERT INTO `IssueStatus` VALUES (2,'Completed'),(1,'Initiated');
+INSERT INTO `IssueStatus` VALUES (3,'Approved'),(2,'Completed'),(1,'Initiated');
 /*!40000 ALTER TABLE `IssueStatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,15 +330,6 @@ CREATE TABLE `Organization` (
   PRIMARY KEY (`idOrganization`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Organization`
---
-
-LOCK TABLES `Organization` WRITE;
-/*!40000 ALTER TABLE `Organization` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Organization` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `Person`
@@ -324,7 +352,7 @@ CREATE TABLE `Person` (
   CONSTRAINT `fk_Person_PersonType` FOREIGN KEY (`PersonType_idPersonType`) REFERENCES `PersonType` (`idPersonType`),
   CONSTRAINT `fk_Person_Role` FOREIGN KEY (`Role_idRole`) REFERENCES `Role` (`idRole`),
   CONSTRAINT `fk_Person_User` FOREIGN KEY (`User_EmailAddress`) REFERENCES `User` (`EmailAddress`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -427,7 +455,7 @@ CREATE TABLE `PropertyInformation` (
   CONSTRAINT `fk_PropertyInformation_Address` FOREIGN KEY (`Address_idAddress`) REFERENCES `Address` (`idAddress`),
   CONSTRAINT `fk_PropertyInformation_Person` FOREIGN KEY (`OwnerPerson_idPerson`) REFERENCES `Person` (`idPerson`),
   CONSTRAINT `fk_PropertyInformation_PropertyType` FOREIGN KEY (`PropertyType_idPropertyType`) REFERENCES `PropertyType` (`idPropertyType`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -448,7 +476,7 @@ CREATE TABLE `PropertyInformationPerson` (
   KEY `fk_PIP_PropertyInformation` (`PropertyInformation_idPropertyInformation`),
   CONSTRAINT `fk_PIP_Person` FOREIGN KEY (`Person_idPerson`) REFERENCES `Person` (`idPerson`),
   CONSTRAINT `fk_PIP_PropertyInformation` FOREIGN KEY (`PropertyInformation_idPropertyInformation`) REFERENCES `PropertyInformation` (`idPropertyInformation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -534,7 +562,30 @@ CREATE TABLE `ServiceProvider` (
   KEY `fk_ServiceProvider_ServiceCategory` (`ServiceCategory_idServiceCategory`),
   CONSTRAINT `fk_ServiceProvider_Person` FOREIGN KEY (`Person_idPerson`) REFERENCES `Person` (`idPerson`),
   CONSTRAINT `fk_ServiceProvider_ServiceCategory` FOREIGN KEY (`ServiceCategory_idServiceCategory`) REFERENCES `ServiceCategory` (`idServiceCategory`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ServiceProviderIssue`
+--
+
+DROP TABLE IF EXISTS `ServiceProviderIssue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ServiceProviderIssue` (
+  `idServiceProviderIssue` int(11) NOT NULL AUTO_INCREMENT,
+  `ServiceProvider_idServiceProvider` int(11) NOT NULL,
+  `Issue_idIssue` int(11) NOT NULL,
+  `AssignBy_idPerson` int(11) NOT NULL,
+  `AssignDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`idServiceProviderIssue`),
+  KEY `fk_ServiceProviderIssue_ServiceProvider` (`ServiceProvider_idServiceProvider`),
+  KEY `fk_ServiceProviderIssue_Issue` (`Issue_idIssue`),
+  KEY `fk_ServiceProviderIssue_AssignByPerson` (`AssignBy_idPerson`),
+  CONSTRAINT `fk_ServiceProviderIssue_AssignByPerson` FOREIGN KEY (`AssignBy_idPerson`) REFERENCES `Person` (`idPerson`),
+  CONSTRAINT `fk_ServiceProviderIssue_Issue` FOREIGN KEY (`Issue_idIssue`) REFERENCES `Issue` (`idIssue`),
+  CONSTRAINT `fk_ServiceProviderIssue_ServiceProvider` FOREIGN KEY (`ServiceProvider_idServiceProvider`) REFERENCES `ServiceProvider` (`idServiceProvider`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -546,21 +597,19 @@ DROP TABLE IF EXISTS `User`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `User` (
   `EmailAddress` varchar(100) NOT NULL,
-  `UserPassword` varchar(100) NOT NULL,
+  `UserPassword` varchar(45) NOT NULL,
   `Enabled` tinyint(4) DEFAULT '0',
   `FirstName` varchar(45) DEFAULT NULL,
   `LastName` varchar(45) DEFAULT NULL,
   `MiddleName` varchar(45) DEFAULT NULL,
   `DOB` varchar(45) DEFAULT NULL,
   `Gender_idGender` int(11) DEFAULT NULL,
-  `VerificationToken` varchar(100) NOT NULL,
+  `VerificationToken` varchar(45) NOT NULL,
   PRIMARY KEY (`EmailAddress`),
   KEY `fk_User_Gender` (`Gender_idGender`),
   CONSTRAINT `fk_User_Gender` FOREIGN KEY (`Gender_idGender`) REFERENCES `Gender` (`idGender`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -570,4 +619,4 @@ CREATE TABLE `User` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-24 22:07:52
+-- Dump completed on 2020-08-09 16:47:02
