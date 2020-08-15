@@ -16,12 +16,12 @@
   <div class="one-column">
       <table><tr ng-repeat="propertyissues in propertiesissues"><td>
       <table class="inlineTable">
-          <tr><th>Square Feet</th><th>Year Built</th><th>Address</th></tr>
-          <tr><td>{{propertyissues.PropertyInformation.SquareFeet}}</td><td>{{propertyissues.PropertyInformation.YearBuilt}}</td><td>{{propertyissues.PropertyInformation.Address1}} {{propertyissues.PropertyInformation.Address2}} {{propertyissues.PropertyInformation.Address3}}, {{propertyissues.PropertyInformation.CityName}}, {{propertyissues.PropertyInformation.StateCode}}</td></tr>
+          <tr><th>Property Address</th></tr>
+          <tr><td>{{propertyissues.PropertyInformation.Address1}} {{propertyissues.PropertyInformation.Address2}}, {{propertyissues.PropertyInformation.CityName}}, {{propertyissues.PropertyInformation.StateCode}}</td></tr>
       </table>
       <table class="inlineTable">
           <tr><th>IssueReq#</th><th>Issue</th><th>Description</th><th>Category</th><th><img src="assets/attachment.png" width="20" height="20"></th><th>Status</th><th ng-if="authority=='ROLE_PROPERTYMANAGER' || authority=='ROLE_OWNER/PROPERTYMANAGER'">Service Provider</th></tr>          
-          <tr ng-repeat="issue in propertyissues.Issues"><td><div ng-if="authority!='ROLE_TENANT'"><a href="#!/viewissuereqlogs?ir={{issue.idIssue}}">IR{{issue.idIssue}}</a></div><div ng-if="authority=='ROLE_TENANT'">IR{{issue.idIssue}}</div></td><td>{{issue.Issue}}</td><td>{{issue.IssueDescription}}</td><td>{{issue.IssueCategory}}</td>
+          <tr ng-repeat="issue in propertyissues.Issues"><td><div ng-if="authority!='ROLE_TENANT'"><a href="#!/viewissuereqlogs?{{issue.idIssue}}">IR{{issue.idIssue}}</a></div><div ng-if="authority=='ROLE_TENANT'">IR{{issue.idIssue}}</div></td><td>{{issue.Issue}}</td><td>{{issue.IssueDescription}}</td><td>{{issue.IssueCategory}}</td>
               <td>
               <div ng-if="issue.AttachmentType">
                   <div ng-if="issue.AttachmentType.indexOf('image') != -1"><img ng-src="assets/images.png" width="15px" height="15px" ng-click="openAttachment(issue.Url)" style="cursor:pointer"/></div>

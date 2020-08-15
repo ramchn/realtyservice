@@ -1,0 +1,52 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-bottom: 1px solid #ddd; padding: 5px;}
+    .inlineTable{display:inline;}
+    .nohover:hover {background-color: #ffffff;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Information</a> > Detail View</p>   
+<div class="row-padding">
+  <div class="one-column">             
+      <table class="inlineTable">
+          <tr><th colspan="2">Property Details</th></tr>
+          <tr><td>Property Type</td>
+              <td>{{propertyInformation.PropertyType}}</td></tr>
+          <tr><td>Square Feet</td><td>{{propertyInformation.SquareFeet}}</td></tr>
+          <tr><td>Beds</td><td>{{propertyInformation.Beds}}</td></tr>
+          <tr><td>Baths</td><td>{{propertyInformation.Baths}}</td></tr>
+          <tr><td>Stories</td><td>{{propertyInformation.Stories}}</td></tr>
+          <tr><td>Lotsize</td><td>{{propertyInformation.Lotsize}}</td></tr>
+          <tr><td>Year Built</td><td>{{propertyInformation.YearBuilt}}</td></tr>
+          <tr><td>Year Renovated</td><td>{{propertyInformation.YearRenovated}}</td></tr>
+          <tr><td>APN</td><td>{{propertyInformation.APN}}</td></tr>
+          <tr><td>Community</td><td>{{propertyInformation.Community}}</td></tr>
+          <tr><td>HOA Dues</td><td>{{propertyInformation.HOADues}}</td></tr>
+      </table>           
+      <table class="inlineTable">
+          <tr><th colspan="2">Address Details</th></tr>
+          <tr><td>Address 1</td><td>{{propertyInformation.Address1}}</td></tr>
+          <tr><td>Address 2</td><td>{{propertyInformation.Address2}}</td></tr>
+          <tr><td>Address 3</td><td>{{propertyInformation.Address3}}</td></tr>
+          <tr><td>City</td><td>{{propertyInformation.CityName}}</td></tr>
+          <tr><td>Zip</td><td>{{propertyInformation.Zip}}</td></tr>
+          <tr><td>State</td><td>{{propertyInformation.StateCode}}</td></tr>
+          <tr><td>Country</td><td>{{propertyInformation.CountryName}}</td></tr> 
+          <tr class="nohover"><td colspan="2" style="border-bottom: none; padding: 5px;"></td></tr> 
+          <tr class="nohover"><td  style="border-bottom: none; padding: 5px;"><button class="button" onclick="window.location.href='#!/viewpropinfo'">Back</button></td><td  style="border-bottom: none; padding: 5px;"><button class="button" ng-click="editPropInfo()">Edit</button></td></tr> 
+      </table>  
+</div>
+</div>
+
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

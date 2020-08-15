@@ -13,10 +13,10 @@
              <tr>
                  <td>Sign up as: </td>
                  <td colspan="2">                     
-                     <select ng-model="selectedPersonType" class="textfield" ng-options="personType.PersonType for personType in personTypes" required> 
+                     <select name="propertyType" ng-model="selectedPersonType" class="textfield" ng-options="personType.PersonType for personType in personTypes" required> 
                      </select>
                  </td>
-                 <td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.emailAddress.$error.required">Required!</span></td>
+                 <td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.propertyType.$error.required">Required!</span></td>
              </tr>    
              <tr>
                  <td>Email</td><td colspan="2"><input type="email" class="textfield" ng-model="EmailAddress" name="emailAddress" ng-maxlength="45" required/></td><td><span style="color:Red" ng-show="signupForm.$submitted&&signupForm.emailAddress.$error.required">Required!</span><span style="color:Red" ng-show="signupForm.emailAddress.$dirty&&signupForm.emailAddress.$invalid">Not a valid Email</span><span style="color:Red" ng-show="signupForm.emailAddress.$dirty&&signupForm.emailAddress.$error.maxlength">Maximum 45 alphabets allowed</span></td>

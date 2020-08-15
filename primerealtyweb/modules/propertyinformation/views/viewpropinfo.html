@@ -1,0 +1,32 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    .nohover:hover {background-color: #ffffff;}
+    th, td {border-bottom: 1px solid #ddd; padding: 5px;}
+    table.inlineTable{display:inline;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Information</a> > View</p>   
+<div class="row-padding">
+    <p ng-if="!CreateDisabled"><a href="#!/createpropinfo" title="create property information">Create</a></p>
+    <div class="one-column">             
+        <table ng-if="propertyInformations.length > 0">
+          <tr><th>#ID</th><th>Type</th><th>Address</th><th>Yr Built</th><th ng-if="OwnerOrCompanyOwner">Property Manager Details</th><th ng-if="PropertyManager">Owner Details</th><th>Tenant Details</th></tr>
+            <tr ng-repeat="propertyInformation in propertyInformations"><td><a href="#!/detailpropinfo?{{propertyInformation.idPropertyInformation}}" title="edit property information">{{propertyInformation.idPropertyInformation}}</a></td><td>{{propertyInformation.PropertyType}}</td><td>{{propertyInformation.Address1}} {{propertyInformation.Address2}}, {{propertyInformation.CityName}} {{propertyInformation.StateCode}}</td><td>{{propertyInformation.YearBuilt}}</td><td ng-if="propertyInformation.PropertyManagerExist"><a href="#!/assignpropmngr?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign property manager"><span ng-if="propertyInformation.PropertyManager.FirstName">{{propertyInformation.PropertyManager.FirstName}}</span><span ng-if="!propertyInformation.PropertyManager.FirstName">{{propertyInformation.PropertyManager.EmailAddress}}</span></a>, from {{propertyInformation.PropertyManager.StartDate | date}}</td><td ng-if="OwnerOrCompanyOwner && (!propertyInformation.PropertyManagerExist)"><a href="#!/assignpropmngr?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign property manager">unassigned</a></td><td ng-if="propertyInformation.OwnerExist"><a href="#!/assignowner?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign owner"><span ng-if="propertyInformation.Owner.FirstName">{{propertyInformation.Owner.FirstName}}</span><span ng-if="!propertyInformation.Owner.FirstName">{{propertyInformation.Owner.EmailAddress}}</span></a>, from {{propertyInformation.Owner.StartDate | date}}</td><td ng-if="PropertyManager && (!propertyInformation.OwnerExist)"><a href="#!/assignowner?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign owner">unassigned</a></td><td><div ng-repeat="tenant in propertyInformation.Tenants">
+                <span ng-if="!TenantReadOnly"><a ng-href="#!/assigntenant?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign tenant"><span ng-if="tenant.FirstName">{{tenant.FirstName}}</span><span ng-if="!tenant.FirstName">{{tenant.EmailAddress}}</span></a></span><span ng-if="TenantReadOnly"><span ng-if="tenant.FirstName">{{tenant.FirstName}}</span><span ng-if="!tenant.FirstName">{{tenant.EmailAddress}}</span></span>, from {{tenant.StartDate | date}}</div><div ng-if="propertyInformation.Tenants.length == 0"><span ng-if="!TenantReadOnly"><a ng-href="#!/assigntenant?{{propertyInformation.idPropertyInformation}}" title="assign/re-assign tenant">vacant</a></span><span ng-if="TenantReadOnly">vacant</span></div></td></tr>     
+            <tr><td colspan="6"></td></tr>
+      </table>        
+        <table ng-if="propertyInformations.length == 0"><tr class="nohover"><td>No property information found</td></tr></table>
+    </div>    
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

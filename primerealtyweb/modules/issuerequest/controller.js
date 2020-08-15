@@ -58,8 +58,14 @@ angular.module('IssueRequest')
     ['$scope', '$rootScope', '$location', 'IssueRequestService', 'ENV', '$window', 
     function ($scope, $rootScope, $location, IssueRequestService, ENV, $window) {        
         $scope.personid = $rootScope.globals.currentUser.personid;
-        var qs = $location.search();   
-        $scope.issueid = qs.ir;
+        
+        var qp = ''+0;
+        var url = $location.absUrl();    
+        var qsexist = url.lastIndexOf('?');
+        if(qsexist != -1) {
+            qp = url.substr(qsexist+1);              
+        }  
+        $scope.issueid = qp;
                 
         var formData = { 'issueId': $scope.issueid }
         IssueRequestService.getIssueLogs(formData, function (issuelogs) {            
@@ -154,6 +160,7 @@ angular.module('IssueRequest')
                             }
                         }
                         $scope.issuelogs = issuelogs;
+                        $scope.Log = '';
                     });
 
                     $('#issuerequestsubmit').attr('disabled', false);
@@ -168,8 +175,14 @@ angular.module('IssueRequest')
     ['$scope', '$rootScope', '$location', 'IssueRequestService', '$window',  
     function ($scope, $rootScope, $location, IssueRequestService, $window) {        
         $scope.personid = $rootScope.globals.currentUser.personid;
-        var qs = $location.search();        
-        $scope.issueid = qs.ir;
+        
+        var qp = ''+0;
+        var url = $location.absUrl();    
+        var qsexist = url.lastIndexOf('?');
+        if(qsexist != -1) {
+            qp = url.substr(qsexist+1);             
+        }       
+        $scope.issueid = qp;
         
         IssueRequestService.getServiceProviders(function (serviceproviders) {
             $scope.serviceproviders = serviceproviders;
@@ -201,15 +214,7 @@ angular.module('IssueRequest')
         
         $scope.authority = $rootScope.globals.currentUser.authority;
         $scope.personid = $rootScope.globals.currentUser.personid;
-        $scope.propertyInformationIds = $rootScope.globals.currentUser.propertyInformationIds;
-
-        if($scope.propertyInformationIds.length > 0) {
-            var formData = { 'propertyInformationIds':$scope.propertyInformationIds}
-            IssueRequestService.getPropertyInformations(formData, function (propertyInformations) {
-                $scope.propertyInformations = propertyInformations; 
-            });                      
-        }
-        
+                
         IssueRequestService.getIssueStatuses(function (issueStatuses) {
             $scope.issueStatuses = issueStatuses;            
         });
@@ -264,7 +269,7 @@ angular.module('IssueRequest')
         
         // view and assign a service provider - open it in a new window
         $scope.openServiceProvider = function(issueid) {
-            $window.open("#!/assignissuereq?ir="+issueid, "serviceprovider", "width=600,height=400,left=150,top=150");     
+            $window.open("#!/assignissuereq?"+issueid, "serviceprovider", "width=600,height=400,left=150,top=150");     
             return false;
         }        
     }])
@@ -281,9 +286,15 @@ angular.module('IssueRequest')
 .controller('CreateIssueRequestController',
     ['$scope', '$rootScope', 'IssueRequestService',  
     function ($scope, $rootScope, IssueRequestService) {    
-        $scope.personid = $rootScope.globals.currentUser.personid;        
-        $scope.propertyInformationIds = $rootScope.globals.currentUser.propertyInformationIds;
+        $scope.personid = $rootScope.globals.currentUser.personid;    
         
+        var formData = {
+            'personId':$scope.personid
+        }
+        IssueRequestService.getPropInfoForTenant(formData, function (response) {
+            $scope.PropertyInformationId = response.PropertyInformationId;
+        });
+                
         IssueRequestService.getIssueCategories(function (issueCategories) {
             $scope.issueCategories = issueCategories;
         });
@@ -316,7 +327,7 @@ angular.module('IssueRequest')
                 formData.append('attachment', $scope.Attachment);            
                 formData.append('issueCategoryId', $scope.selectedIssueCategory.idIssueCategory);
                 formData.append('personId', $scope.personid);
-                formData.append('propertyInformationId', $scope.propertyInformationIds[0]);
+                formData.append('propertyInformationId', $scope.PropertyInformationId);
                 
                 IssueRequestService.createIssueRequestMP(formData, function (response) {      
                     $scope.result = response;
@@ -332,7 +343,7 @@ angular.module('IssueRequest')
                     'issueDescription':$scope.IssueDescription,
                     'issueCategoryId':$scope.selectedIssueCategory.idIssueCategory,
                     'personId':$scope.personid,
-                    'propertyInformationId':$scope.propertyInformationIds[0]
+                    'propertyInformationId':$scope.PropertyInformationId
                 }
                 
                 IssueRequestService.createIssueRequest(formData, function (response) {      
@@ -341,7 +352,8 @@ angular.module('IssueRequest')
                     $('#issuerequestsubmit').attr('disabled', false);
                     $("#spinner").hide();
                 });
-            }                                 
+            }   
+            
         }
         
     }]);

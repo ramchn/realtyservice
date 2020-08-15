@@ -1,0 +1,68 @@
+<style>
+table.inlineTable{display:inline;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Management</a> > <a href="#!/viewpropinfo">Property Information</a> > Create</p>   
+<div class="row-padding">
+  {{result.message}}
+  <div class="one-column">     
+      <form name="propInfoForm" novalidate ng-submit="propInfoForm.$valid&&savePropInfo()">       
+      <table class="inlineTable">
+          <tr><th colspan="2">Property Details</th></tr>          
+          <tr><td>Square Feet</td><td><input type="textfield" class="halftextfield" name="squareFeet" ng-model="SquareFeet" ng-maxlength="5" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.squareFeet.$dirty&&propInfoForm.squareFeet.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.squareFeet.$dirty&&propInfoForm.squareFeet.$error.maxlength">Maximum 5 numbers allowed</span></td></tr>
+          <tr><td>Beds</td><td><input type="textfield" class="halftextfield" name="beds" ng-model="Beds"/></td></tr>
+          <tr><td>Baths</td><td><input type="textfield" class="halftextfield" name="baths" ng-model="Baths"/></td></tr>
+          <tr><td>Stories</td><td><input type="textfield" class="halftextfield" name="stories" ng-model="Stories"/></td></tr>
+          <tr><td>Lotsize</td><td><input type="textfield" class="halftextfield" name="lotsize" ng-model="Lotsize"/></td></tr>          
+          <tr><td>Property Type</td>
+              <td>
+                  <select name="propertyType" ng-model="selectedPropertyType" class="textfield" ng-options="propertyType.PropertyType for propertyType in propertyTypes" required> 
+                     </select>                 
+                  </td></tr>
+          <tr><td colspan="2"><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.propertyType.$error.required">Required!</span></td></tr>
+      </table>  
+      <table class="inlineTable">
+        <tr><th colspan="2">Property Details cont..</th></tr>        
+          <tr><td>Year Built</td><td><input type="textfield" class="halftextfield" name="yearBuilt" ng-model="YearBuilt" ng-maxlength="4" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.yearBuilt.$dirty&&propInfoForm.yearBuilt.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.yearBuilt.$dirty&&propInfoForm.yearBuilt.$error.maxlength">Maximum 4 numbers allowed</span></td></tr>
+          <tr><td>Year Renovated</td><td><input type="textfield" class="halftextfield" name="yearRenovated" ng-model="YearRenovated" ng-maxlength="4" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.yearRenovated.$dirty&&propInfoForm.yearRenovated.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.yearRenovated.$dirty&&propInfoForm.yearRenovated.$error.maxlength">Maximum 4 numbers allowed</span></td></tr>
+          <tr><td>APN</td><td><input type="textfield" class="halftextfield" name="apn" ng-model="APN"/></td></tr>
+          <tr><td>Community</td><td><input type="textfield" class="halftextfield" name="community" ng-model="Community"/></td></tr>
+          <tr><td>HOA Dues</td><td><input type="textfield" class="halftextfield" name="hoaDues" ng-model="HOADues"/></td></tr>
+          <tr><td style="padding: 10px;"><input type="button" class="button" onclick="window.location.href='#!/viewpropinfo'" value="Back"/></td><td style="padding: 10px;"><input type="submit" id="propinfosubmit" class="button" value="Submit"/></td></tr>           
+      </table>
+      <table class="inlineTable">
+          <tr><th colspan="2">Address Details</th></tr>
+          <tr><td>Address 1</td><td><input type="textfield" class="textfield" name="address1" ng-model="Address1" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.address1.$error.required">Required!</span></td></tr>
+          <tr><td>Address 2</td><td><input type="textfield" class="textfield" name="address2" ng-model="Address2"/></td></tr>
+          <tr><td>Address 3</td><td><input type="textfield" class="textfield" name="address3" ng-model="Address3"/></td></tr>
+          <tr><td>City</td><td><input type="textfield" class="textfield" name="cityName" ng-model="CityName" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.cityName.$error.required">Required!</span></td></tr>
+          <tr><td>Zip</td><td><input type="textfield" class="textfield" name="zip" ng-model="Zip" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.zip.$error.required">Required!</span></td></tr>
+          <tr><td>State</td><td>
+              <select name="stateCode" ng-model="selectedState" class="textfield" ng-options="stateCode.StateCode for stateCode in stateCodes" required> 
+                     </select>
+              </td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.stateCode.$error.required">Required!</span></td></tr>
+          <tr><td>Country</td><td>
+              <select name="country" ng-model="selectedCountry" class="textfield" ng-options="country.CountryName for country in countries" required> 
+                     </select>
+              </td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.country.$error.required">Required!</span></td></tr>
+      </table>  
+      </form>
+  </div>  
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->

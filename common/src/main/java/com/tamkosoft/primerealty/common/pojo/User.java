@@ -25,15 +25,15 @@ public class User extends EmailAddress {
 	@Pattern(regexp = "^[A-Za-z0-9!@#$%^&*]*$")
 	private String userPassword;
 	
-	@Size(min = 2, max = 45)
+	@Size(max = 45)
 	@Pattern(regexp = "^[A-Za-z\\.\\s]*$")
 	private String firstName;
 	
-	@Size(min = 2, max = 45)
+	@Size(max = 45)
 	@Pattern(regexp = "^[A-Za-z\\.\\s]*$")
 	private String lastName;
 	
-	@Size(min = 1, max = 45)
+	@Size(max = 45)
 	@Pattern(regexp = "^[A-Za-z\\.\\s]*$")
 	private String middleName;
 	

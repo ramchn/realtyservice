@@ -76,13 +76,13 @@ public class IssuerequestEmailer {
 		return resultMap;
 	}
 	
-	public Map<String, Object> emailServiceProvider(Integer PersonId, Integer IssueId, Integer ServiceProviderId) {
+	public Map<String, Object> emailServiceProvider(Integer PersonId, Integer IssueId, Number ServiceProviderId) {
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		String FromAddress = env.getProperty("email.address");	
 		
-		Integer SpPersonId = issuerequestDao.getPersonIdByServiceProviderId(ServiceProviderId);
+		Number SpPersonId = issuerequestDao.getPersonIdByServiceProviderId(ServiceProviderId);
 		
 		Map<String, Object> user = primeRealtyDao.getUserByPerson(SpPersonId);
 		String ToAddress = user.get("EmailAddress") != null ? user.get("EmailAddress").toString() : null;		

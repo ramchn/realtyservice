@@ -5,7 +5,7 @@ angular.module('Env', []);
 angular.module('Signup', []);
 angular.module('Template', []);
 angular.module('Home', []);
-angular.module('Property', []);
+angular.module('PropertyInformation', []);
 angular.module('IssueRequest', []);
 angular.module('Myinfo', []);
 angular.module('Rest', []);
@@ -16,7 +16,7 @@ angular.module('PrimeRealty', [
     'Signup',
     'Template',
     'Home',    
-    'Property',
+    'PropertyInformation',
     'IssueRequest',
     'Myinfo',
     'Rest',
@@ -124,120 +124,6 @@ angular.module('PrimeRealty', [
                 }
             }            
         })     
-    .state('createpi', {
-            url: '/createpi',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/createpi.html'        
-                },
-                'header@createpi': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@createpi': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@createpi': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('viewpi', {
-            url: '/viewpi',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/viewpi.html'      
-                },
-                'header@viewpi': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@viewpi': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@viewpi': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('editpi', {
-            url: '/editpi',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/editpi.html'     
-                },
-                'header@editpi': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@editpi': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@editpi': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('assigntenant', {
-            url: '/assigntenant',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/assigntenant.html'     
-                },
-                'header@assigntenant': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@assigntenant': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@assigntenant': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('assignpm', {
-            url: '/assignpm',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/assignpm.html'     
-                },
-                'header@assignpm': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@assignpm': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@assignpm': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
-    .state('assignowner', {
-            url: '/assignowner',             
-            views: {
-                '': {
-                    controller: 'PropertyController',
-                    templateUrl: 'modules/property/views/assignowner.html'     
-                },
-                'header@assignowner': {
-                    templateUrl: 'modules/template/views/header.html'        
-                },
-                'menu@assignowner': {
-                    controller: 'MenuController',
-                    templateUrl: 'modules/template/views/menu.html'        
-                },
-                'footer@assignowner': {
-                    templateUrl: 'modules/template/views/footer.html'        
-                }
-            }  
-        }) 
     .state('editsp', {
             url: '/editsp',             
             views: {
@@ -252,6 +138,139 @@ angular.module('PrimeRealty', [
                     templateUrl: 'modules/template/views/menu.html'        
                 },
                 'footer@editsp': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('viewpropinfo', {
+            url: '/viewpropinfo',             
+            views: {
+                '': {
+                    controller: 'ViewPropertyInformationController',
+                    templateUrl: 'modules/propertyinformation/views/viewpropinfo.html'      
+                },
+                'header@viewpropinfo': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@viewpropinfo': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@viewpropinfo': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('createpropinfo', {
+            url: '/createpropinfo',             
+            views: {
+                '': {
+                    controller: 'CreatePropertyInformationController',
+                    templateUrl: 'modules/propertyinformation/views/createpropinfo.html'        
+                },
+                'header@createpropinfo': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@createpropinfo': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@createpropinfo': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        })  
+    .state('detailpropinfo', {
+            url: '/detailpropinfo',             
+            views: {
+                '': {
+                    controller: 'DetailPropertyInformationController',
+                    templateUrl: 'modules/propertyinformation/views/detailpropinfo.html'     
+                },
+                'header@detailpropinfo': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@detailpropinfo': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@detailpropinfo': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('editpropinfo', {
+            url: '/editpropinfo',             
+            views: {
+                '': {
+                    controller: 'EditPropertyInformationController',
+                    templateUrl: 'modules/propertyinformation/views/editpropinfo.html'     
+                },
+                'header@editpropinfo': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@editpropinfo': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@editpropinfo': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        })     
+    .state('assigntenant', {
+            url: '/assigntenant',             
+            views: {
+                '': {
+                    controller: 'AssignTenantsController',
+                    templateUrl: 'modules/propertyinformation/views/assigntenant.html'     
+                },
+                'header@assigntenant': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@assigntenant': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@assigntenant': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('assignpropmngr', {
+            url: '/assignpropmngr',             
+            views: {
+                '': {
+                    controller: 'AssignPropertyMngrController',
+                    templateUrl: 'modules/propertyinformation/views/assignpropmngr.html'     
+                },
+                'header@assignpropmngr': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@assignpropmngr': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@assignpropmngr': {
+                    templateUrl: 'modules/template/views/footer.html'        
+                }
+            }  
+        }) 
+    .state('assignowner', {
+            url: '/assignowner',             
+            views: {
+                '': {
+                    controller: 'AssignOwnerController',
+                    templateUrl: 'modules/propertyinformation/views/assignowner.html'     
+                },
+                'header@assignowner': {
+                    templateUrl: 'modules/template/views/header.html'        
+                },
+                'menu@assignowner': {
+                    controller: 'MenuController',
+                    templateUrl: 'modules/template/views/menu.html'        
+                },
+                'footer@assignowner': {
                     templateUrl: 'modules/template/views/footer.html'        
                 }
             }  

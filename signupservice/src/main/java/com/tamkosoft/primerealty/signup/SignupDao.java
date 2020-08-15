@@ -40,19 +40,22 @@ public class SignupDao {
 		return jdbcTemplate.queryForList(GENDER_QUERY);
 	}
 	
-	public Map<String, Object> createPropInfoPerson(Number PersonId, Number PropertyInformaitonId) {
+	public Map<String, Object> createPropInfoPerson(Number PersonId, Number PropertyInformaitonId, Number UpdateByPerson) {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {			
-			Map<String, Object> pipParams = new HashMap<String, Object>();
-			pipParams.put("Person_idPerson", PersonId);
-			pipParams.put("PropertyInformation_idPropertyInformation", PropertyInformaitonId);	
+			Map<String, Object> PropInfoPersonParams = new HashMap<String, Object>();
+			PropInfoPersonParams.put("Person_idPerson", PersonId);
+			PropInfoPersonParams.put("PropertyInformation_idPropertyInformation", PropertyInformaitonId);	
+			PropInfoPersonParams.put("UpdateBy_idPerson", UpdateByPerson);
+			PropInfoPersonParams.put("UpdateDate", new Date());
 			
-			Number idPropertyInformationPerson = primeRealtyDao.tableInsert("PropertyInformationPerson",pipParams);
 			
-			if(idPropertyInformationPerson.intValue() > 0) {
-				resultMap.put("idPropertyInformationPerson", idPropertyInformationPerson);
+			Number idPropInfoPerson = primeRealtyDao.tableInsert("PropertyInformationPerson",PropInfoPersonParams);
+			
+			if(idPropInfoPerson.intValue() > 0) {
+				resultMap.put("idPropertyInformationPerson", idPropInfoPerson);
 				
 			} else {								
 				// rollback Email record
@@ -206,11 +209,9 @@ public class SignupDao {
 		try {
 			String Authority = jdbcTemplate.queryForObject(ACCESS_BYUSER_QUERY, new Object[] {EmailAddress}, String.class);
 			Number idPerson = jdbcTemplate.queryForObject(PERSONID_BYUSER_QUERY, new Object[] {EmailAddress}, Integer.class);
-			List<Map<String, Object>> PropertyInformationIds = jdbcTemplate.queryForList(PROPERTYINFOIDS_BYUSER_QUERY, new Object[] {EmailAddress});
 			
 			resultMap.put("Authority", Authority);
-			resultMap.put("idPerson", idPerson);
-			resultMap.put("PropertyInformationIds", PropertyInformationIds);
+			resultMap.put("idPerson", idPerson);			
 						
 		} catch (EmptyResultDataAccessException dae) {
 			primeRealtyLogger.error(SignupDao.class, "loginUser() -> unable to fetch authority or person id or property ids - EmptyResultDataAccessException : " + dae.getMessage());			
@@ -230,8 +231,7 @@ public class SignupDao {
 			PropertyInformationPersonIds = jdbcTemplate.queryForList(PROPERTYINFOPERSON_ACTIVE_QUERY, new Object[] {EmailAddress});
 			
 			if(PropertyInformationPersonIds.size() > 0) {
-				// yes, user has valid start date and end date
-				resultMap.put("PropertyInformationPersonIds", PropertyInformationPersonIds);
+				// yes, user has valid start date and end date				
 				resultMap.put("Authenticated", true);		
 			} else {
 				// no, user is exist in PropertyInformationPerson but don't have valid start date and end date
@@ -290,7 +290,6 @@ public class SignupDao {
 	private static String LOGIN_QUERY = "SELECT FirstName, LastName FROM User WHERE EmailAddress = ? and UserPassword = ? and Enabled = 1";
 	private static String PERSONID_BYUSER_QUERY = "SELECT idPerson FROM Person WHERE User_EmailAddress = ?";
 	private static String ACCESS_BYUSER_QUERY = "SELECT Authority FROM Access WHERE User_EmailAddress = ?";
-	private static String PROPERTYINFOIDS_BYUSER_QUERY = "SELECT idPropertyInformation FROM PropertyInformation, Person WHERE OwnerPerson_idPerson = Person.idPerson AND Person.User_EmailAddress = ?";
 	private static String PASSWORD_BYUSER_QUERY = "SELECT UserPassword FROM User WHERE EmailAddress = ?";
 	private static String PROPERTYINFOPERSON_EXIST_QUERY = "SELECT idPropertyInformationPerson FROM Person, PropertyInformationPerson WHERE PropertyInformationPerson.Person_idPerson = Person.idPerson AND Person.User_EmailAddress = ?";
 	private static String PROPERTYINFOPERSON_ACTIVE_QUERY = "SELECT PropertyInformationPerson.idPropertyInformationPerson, PropertyInformationPerson.PropertyInformation_idPropertyInformation as idPropertyInformation FROM Person, PropertyInformationPerson WHERE PropertyInformationPerson.Person_idPerson = Person.idPerson AND Person.User_EmailAddress = ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP))";

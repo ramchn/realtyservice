@@ -43,10 +43,6 @@ angular.module('IssueRequest')
             RestService.httpJsonPost(ENV.ISSUEREQUEST_API_URL + '/assignpersonforissue', formData, callback);            
         } 
         
-        service.getPropertyInformations = function (formData, callback) {
-            RestService.httpJsonPost(ENV.ISSUEREQUEST_API_URL + '/propertyinfosbyids', formData, callback); 
-        }
-        
         service.getIssueStatuses = function (callback) {
             RestService.httpGet(ENV.ISSUEREQUEST_API_URL + '/issuestatuses', callback);               
         }
@@ -56,6 +52,10 @@ angular.module('IssueRequest')
         } 
         service.getIssues = function (formData, callback) {
             RestService.httpJsonPost(ENV.ISSUEREQUEST_API_URL + '/issuesbyperson', formData, callback); 
+        }
+        
+        service.getPropInfoForTenant = function (formData, callback) {
+            RestService.httpJsonPost(ENV.ISSUEREQUEST_API_URL + '/propinfofortenant', formData, callback); 
         }
         
         service.getIssueCategories = function (callback) {

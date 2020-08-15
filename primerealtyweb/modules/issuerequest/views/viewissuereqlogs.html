@@ -15,7 +15,7 @@
   <div class="one-column">  
       <div>
           <table>             
-            <tr ng-repeat="issuelog in issuelogs" class="row" ng-value="{{$index}}"><td><div ng-click="showdetail($index)">{{issuelog.FirstName}} ({{issuelog.LastName}}) > <span style="color: #9d9d9d">{{issuelog.Log.substr(0,issuelog.Log.indexOf('.'))}}</span>
+            <tr ng-repeat="issuelog in issuelogs" class="row" ng-value="{{$index}}"><td><div ng-click="showdetail($index)">{{issuelog.FirstName}} {{issuelog.LastName}} > <span style="color: #9d9d9d">{{issuelog.Log.substr(0,issuelog.Log.indexOf('.'))}}</span>
                 <table id="detail{{$index}}" class="detailtab"><tr><td>{{issuelog.Log.substr(issuelog.Log.indexOf('.')+1)}}<div ng-if="issuelog.AttachmentType">
                   <div ng-if="issuelog.AttachmentType.indexOf('image') != -1"><img ng-src="assets/images.png" width="15px" height="15px" ng-click="openAttachment(issuelog.Url)" style="cursor:pointer"/></div>
                   <div ng-if="issuelog.AttachmentType.indexOf('pdf') != -1" ng-click="downloadAttachment(issuelog.Url)" style="cursor:pointer"><img ng-src="assets/pdf.png" width="15px" height="15px"/></div>
@@ -25,12 +25,14 @@
       <div>
           <form novalidate ng-submit="submitForm()">
           <table>
+              <!--
             <tr><th colspan="3">Whom should receive email?</th></tr>
             <tr><td colspan="3">
                 <input type="checkbox" value="owner">Joe (Owner)
                 <input type="checkbox" value="sp">Jeff (Service Provider)
                 <input type="checkbox" value="pm">Me (Property Manager)
             </td></tr>
+            -->
             <tr><td colspan="3"><textarea ng-model="Log" rows="5" cols="50" maxlength="500"></textarea></td></tr>
             <tr><td colspan="3"><input type="file" class="textfield" id="attachment" name="attachment" file-model="Attachment"></td></tr>
             <tr><td>

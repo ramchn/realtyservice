@@ -1,4 +1,4 @@
-package com.tamkosoft.primerealty.issuerequest.pojo;
+package com.tamkosoft.primerealty.common.pojo;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;

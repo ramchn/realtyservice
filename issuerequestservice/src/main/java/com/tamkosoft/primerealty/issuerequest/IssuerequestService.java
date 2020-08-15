@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +26,8 @@ import com.tamkosoft.primerealty.common.pojo.IssueLog;
 import com.tamkosoft.primerealty.issuerequest.pojo.IssueId;
 import com.tamkosoft.primerealty.issuerequest.pojo.IssueAssignPersonId;
 import com.tamkosoft.primerealty.issuerequest.pojo.IssueStatusId;
-import com.tamkosoft.primerealty.issuerequest.pojo.PersonId;
-import com.tamkosoft.primerealty.issuerequest.pojo.PropertyInformationId;
+import com.tamkosoft.primerealty.common.pojo.PersonId;
 
-@ControllerAdvice
 @RestController 
 public class IssuerequestService {
 
@@ -129,13 +126,6 @@ public class IssuerequestService {
 	}
 	
 	// view issue request
-	@PostMapping("/propertyinfosbyids")
-	private List<Map<String, Object>> getPropertyInformationsByIds(@Valid @RequestBody PropertyInformationId propertyInformationId) {
-		
-		return issuerequestDao.getPropertyInformationsByIds(propertyInformationId.getPropertyInformationIds());
-		
-	}
-	
 	@GetMapping("/issuestatuses")
 	private List<Map<String, Object>> getIssueStatuses() {
 		  
@@ -234,6 +224,14 @@ public class IssuerequestService {
 	}
 	
 	// create issue request	
+	//getPropertyInformationForTenant
+	@PostMapping("/propinfofortenant")
+	private Map<String, Object> getPropertyInformationForTenant(@Valid @RequestBody PersonId personId) {
+				
+		return issuerequestDao.getPropertyInformationForTenant(personId.getPersonId());
+		
+	}
+	
 	@GetMapping("/issuecategories")
 	private List<Map<String, Object>> getIssueCategories() {
 		  

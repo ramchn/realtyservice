@@ -6,6 +6,7 @@
 <!-- content starts -->
 <p>Assign Service Provider for <b>#IR{{issueid}}</b></p>
 <p>{{result.message}}</p>
+<div ng-if="serviceproviders.length == 0">No Service Providers found</div>
 <table><th>First Name</th><th>Last Name</th><th>Yrs of Exp</th><th>Areas of Expertise</th><th>Area Coverage</th><th>Assign/Reassign</th><tr ng-repeat="serviceprovider in serviceproviders"><td>{{serviceprovider.FirstName}}</td><td>{{serviceprovider.LastName}}</td><td>{{serviceprovider.YearsOfExperience}}</td><td>{{serviceprovider.AreasOfExpertise}}</td><td>{{serviceprovider.AreaCoverage}}</td><td ng-if="serviceprovider.idServiceProvider == assignedperson.idServiceProvider">Assigned</td><td ng-if="serviceprovider.idServiceProvider != assignedperson.idServiceProvider" style="text-decoration:underline;color:blue;cursor:pointer" ng-click="assignPerson(serviceprovider.idServiceProvider)">Assign</td></tr>
 </table><div><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></div>
 <!-- content ends -->

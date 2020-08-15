@@ -1,0 +1,64 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-bottom: 1px solid #ddd; padding: 5px;}
+    .displayin {display: inline;} 
+    .nohover:hover {background-color: #ffffff;}
+    .noborder {border-bottom: none; padding: 5px;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Management</a> > <a href="#!/viewpropinfo">Property Information</a> > Assign/Re-assign Tenant</p>  
+<div class="row-padding">
+    <div>
+      <div class="displayin"><a href="#!/assigntenant" onclick="return showcopy();">Add Tenant</a></div> <div id="copydiv" class="displayin" style="display: none"><form ng-submit="addTenant()"><input type="text" ng-model="EmailAddress" placeholder="tenant@gmail.com" required/><input type="submit" id="addtenantsubmit" class="button" value="Add"><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></form><span>{{result.message}}</span> <span>{{result.emailmessage}}</span></div>
+    </div>
+    <div style="height: 10px;"></div>
+  <div class="one-column">       
+      {{result.updatemessage}}
+    <form name="updateTenantForm" novalidate ng-submit="updateTenant()">
+      <table class="displayin">
+          <tr class="nohover"><th colspan="2">Property Information</th></tr>
+          <tr><th>Type</th><th>Address</th></tr>
+          <tr><td>{{propertyInformation.PropertyType}}</td><td>{{propertyInformation.Address1}} {{propertyInformation.Address2}} {{propertyInformation.CityName}} {{propertyInformation.StateCode}}</td></tr>          
+      </table> 
+      <table class="displayin" ng-if="tenants.length > 0">
+          <tr class="nohover"><th colspan="4">Tenant Details <img ng-click="refreshTenant()" style="cursor:pointer" src="assets/refresh.png" width="15px" height="15px"></th></tr>
+          <tr><th>Assign</th><th>Person</th><th>Start Date</th><th>End Date</th></tr>
+          <tr ng-repeat="tenant in tenants">
+            <td><input type="checkbox" id="assignCheck{{tenant.idPerson}}" ng-model="tenant.AssignStatus" ng-checked="tenant.AssignStatus" required/></td>
+            <td ng-if="tenant.FirstName || tenant.LastName">{{tenant.FirstName}} {{tenant.LastName}}</td>
+            <td ng-if="!tenant.FirstName && !tenant.LastName">{{tenant.EmailAddress}}</td>            
+            <td><input type="date" name="startdate" ng-model="tenant.StartDate"/></td>
+            <td><input type="date" name="enddate" ng-model="tenant.EndDate"/></td>
+          </tr>    
+          <tr class="nohover"><td colspan="4"><div ng-if="tenants.length > 0"><i>Setting the Start Date to today's date means assignment happens imediately<br>Setting the End Date to today's date means un-assignment happens immediately</i></div></td></tr>
+          <tr class="nohover"><td colspan="4"><div ng-if="tenants.length > 0"><button class="button" onclick="window.location.href='#!/viewpropinfo'">Back</button>
+            <input type="submit" class="button" value="Update"/></div>
+            </td></tr>          
+      </table>    
+        <table class="displayin" ng-if="tenants.length == 0"><tr class="nohover"><td class="noborder">&nbsp;</td></tr><tr class="nohover"><td colspan="3" class="noborder">No Tenants found for this property. Add a new tenant by clicking Add Tenant link</td></tr></table>
+      </form>
+  </div>  
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<script>
+    function showcopy() {
+        var copyDiv = document.getElementById("copydiv");
+        if(copyDiv.style.display == 'none') {
+           copyDiv.style.display = 'inline';
+        } else {
+           copyDiv.style.display = 'none';
+        }
+        return false;
+    }    
+</script>
+<!-- footer ends -->

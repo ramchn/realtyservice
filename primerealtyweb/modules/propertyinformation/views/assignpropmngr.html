@@ -1,0 +1,67 @@
+<style>
+    tr:hover {background-color: #b5b0b0;}
+    th, td {border-bottom: 1px solid #ddd; padding: 5px;}
+    .displayin {display: inline;} 
+    .nohover:hover {background-color: #ffffff;}
+    .noborder {border-bottom: none; padding: 5px;}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Management</a> > <a href="#!/viewpropinfo">Property Information</a> > Assign/Re-assign Property Manager</p>  
+<div class="row-padding">
+    <div>
+      <div class="displayin"><a href="#!/assignpropmngr" onclick="return showcopy();">Add Property Manager</a></div> <div id="copydiv" class="displayin" style="display: none"><form ng-submit="addPropMngr()"><input type="text" ng-model="EmailAddress" placeholder="propertymngr@gmail.com" required/><input type="submit" id="addpropmngrsubmit" class="button" value="Add"><img id="spinner" ng-src="assets/spinner.gif" width="70" height="40" style="display: none"/></form><span>{{result.message}}</span> <span>{{result.emailmessage}}</span></div>
+    </div>
+    <div style="height: 10px;"></div>
+  <div class="one-column">       
+      {{result.updatemessage}}
+    <form name="updatePropMngrForm" novalidate ng-submit="updatePropMngr()">
+        <!--
+        <li ng-repeat="PId in PIds"><input type="radio" ng-model="$parent.myRad" ng-value="PId.id">rad{{PId}}</li>
+        -->
+      <table class="displayin">
+          <tr class="nohover"><th colspan="2">Property Information</th></tr>
+          <tr><th>Type</th><th>Address</th></tr>
+          <tr><td>{{propertyInformation.PropertyType}}</td><td>{{propertyInformation.Address1}} {{propertyInformation.Address2}} {{propertyInformation.CityName}} {{propertyInformation.StateCode}}</td></tr>          
+      </table> 
+      <table class="displayin">
+          <tr class="nohover" ng-if="propMngrs.length > 0"><th colspan="4">Property Manager Details <img ng-click="refreshPropMngr()" style="cursor:pointer" src="assets/refresh.png" width="15px" height="15px"></th></tr>
+          <tr ng-if="propMngrs.length > 0"><th>Assign</th><th>Person</th><th>Start Date</th><th>End Date</th></tr>
+          <tr ng-repeat="propMngr in propMngrs">
+            <td><input type="radio" name="assignRad" ng-model="$parent.assignRad" ng-value="propMngr.idPerson" required/></td>
+            <td ng-if="propMngr.FirstName || propMngr.LastName">{{propMngr.FirstName}} {{propMngr.LastName}}</td>
+            <td ng-if="!propMngr.FirstName && !propMngr.LastName">{{propMngr.EmailAddress}}</td>            
+            <td><input type="date" name="startdate" ng-model="propMngr.StartDate"/></td>
+            <td><input type="date" name="enddate" ng-model="propMngr.EndDate"/></td>
+          </tr>     
+          <tr class="nohover"><td colspan="4"><div ng-if="propMngrs.length > 0"><i>Setting the Start Date to today's date means assignment happens imediately<br>Setting the End Date to today's date means un-assignment happens immediately</i></div></td></tr>
+          <tr class="nohover"><td colspan="4"><div ng-if="propMngrs.length > 0"><button class="button" onclick="window.location.href='#!/viewpropinfo'">Back</button>
+            <input type="submit" class="button" value="Update"/></div>
+            </td></tr>
+      </table>  
+        <table class="displayin" ng-if="owners.length == 0"><tr class="nohover"><td class="noborder">&nbsp;</td></tr><tr class="nohover"><td colspan="3" class="noborder">No Property Managers found for this property. Add a new Property Manager by clicking Add Property Manager link</td></tr></table>
+      </form>
+  </div>  
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<script>
+    function showcopy() {
+        var copyDiv = document.getElementById("copydiv");
+        if(copyDiv.style.display == 'none') {
+           copyDiv.style.display = 'inline';
+        } else {
+           copyDiv.style.display = 'none';
+        }
+        return false;
+    }    
+</script>
+<!-- footer ends -->

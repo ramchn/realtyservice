@@ -1,6 +1,7 @@
 package com.tamkosoft.primerealty.common;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class PrimeRealtyDao {
 	@Autowired
     private PrimeRealtyLogger primeRealtyLogger;
 	
-	public Map<String, Object> getUserByPerson(Integer personId) {
+	public Map<String, Object> getUserByPerson(Number PersonId) {
 		
 		String name = "";
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 				
 		try {
-			resultMap = jdbcTemplate.queryForMap(NAME_BYPERSON_QUERY, personId);
+			resultMap = jdbcTemplate.queryForMap(NAME_BYPERSON_QUERY, PersonId);
 			
 			Object FirstName = resultMap.get("FirstName");
 			Object MiddleName = resultMap.get("MiddleName");	
@@ -42,6 +43,16 @@ public class PrimeRealtyDao {
 		return resultMap;
 	}
 	
+	public List<Map<String, Object>> getCountries() {
+		  
+		return jdbcTemplate.queryForList(COUNTRIESNAME_QUERY);
+	}
+	
+	public List<Map<String, Object>> getStateCodes(Number idCountry) {
+		
+		return jdbcTemplate.queryForList(STATECODE_BYCOUNTRY_QUERY, new Object[] {idCountry});
+	}
+	
 	public Number tableInsert(String table, Map<String, Object> params) {
 		  
 		return new SimpleJdbcInsert(jdbcTemplate)
@@ -50,6 +61,8 @@ public class PrimeRealtyDao {
 					.executeAndReturnKey(params);	
 	}
 	
+	private static String COUNTRIESNAME_QUERY = "select idCountry, CountryName from Country";
+	private static String STATECODE_BYCOUNTRY_QUERY = "select idState, StateCode from State, Country where State.Country_idCountry = Country.idCountry and Country.idCountry = ?";
 	private static String NAME_BYPERSON_QUERY = "SELECT User.FirstName as FirstName, User.MiddleName as MiddleName, User.LastName as LastName, User.EmailAddress as EmailAddress FROM Person, User WHERE Person.User_EmailAddress = User.EmailAddress AND Person.idPerson = ?";
 	
 }

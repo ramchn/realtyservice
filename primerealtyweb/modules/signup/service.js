@@ -18,10 +18,6 @@ angular.module('Signup')
         service.signUp = function (formData, callback) {
             RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signup', formData, callback);            
         }
-                
-        service.signupbyPropertyInfo = function (formData, callback) {
-            RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signupbypropertyinfo', formData, callback);       
-        }
         
         service.userVerification = function (formData, callback) {
             RestService.httpJsonPost(ENV.SIGNUP_API_URL + '/signup/userverification', formData, callback);   
@@ -43,7 +39,7 @@ angular.module('Signup')
     function (Base64, $http, $cookies, $rootScope) {
         var service = {};
 
-        service.SetCredentials = function (username, password, personid, authority, firstname, lastname, propertyInformationIds) {
+        service.SetCredentials = function (username, password, personid, authority, firstname, lastname) {
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
@@ -53,8 +49,7 @@ angular.module('Signup')
                     personid: personid,
                     authority: authority,
                     firstname: firstname,
-                    lastname: lastname,
-                    propertyInformationIds: propertyInformationIds
+                    lastname: lastname
                 }
             }
 

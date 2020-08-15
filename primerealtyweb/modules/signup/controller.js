@@ -64,7 +64,7 @@ angular.module('Signup')
         
         // reset login status
         AuthService.ClearCredentials();
-        
+                
         $scope.login = function () {      
             
             $scope.dataLoading = true;
@@ -78,18 +78,7 @@ angular.module('Signup')
                 $("#spinner").hide();
                 if (auth.Authenticated) {                    
 
-                    var PropertyInformationIds = new Array();
-                    for(var i = 0; i < auth.PropertyInformationIds.length; i++) {
-                        PropertyInformationIds[i] = auth.PropertyInformationIds[i].idPropertyInformation;                       
-                    } 
-                    
-                    if(PropertyInformationIds.length == 0 && angular.isDefined(auth.PropertyInformationPersonIds)) {                 
-                        for(var i = 0; i < auth.PropertyInformationPersonIds.length; i++) {          
-                            PropertyInformationIds[i] = auth.PropertyInformationPersonIds[i].idPropertyInformation;
-                        }
-                    }
-
-                    AuthService.SetCredentials($scope.username, $scope.password, auth.idPerson, auth.Authority, auth.FirstName, auth.LastName, PropertyInformationIds);
+                    AuthService.SetCredentials($scope.username, $scope.password, auth.idPerson, auth.Authority, auth.FirstName, auth.LastName);
                     $location.path('/home');
                 } else {
                     $scope.error = "either email not verified or invalid credentials";

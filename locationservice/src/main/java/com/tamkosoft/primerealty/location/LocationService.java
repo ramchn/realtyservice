@@ -9,7 +9,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,19 +24,6 @@ public class LocationService {
 	
 	@Autowired
 	LocationDao locationDao;
-
-	@GetMapping("/countries")
-	private List<Map<String, Object>> getCountries() {
-	  
-		return locationDao.getCountries();
-	}
-	
-	// US country Id is 1
-	@GetMapping("/usstates")
-	private List<Map<String, Object>> getUSStates() {
-		
-		return locationDao.getUSStates();
-	}
 	
 	// minimum 5 characters required
 	@PostMapping("/citiesbyname")

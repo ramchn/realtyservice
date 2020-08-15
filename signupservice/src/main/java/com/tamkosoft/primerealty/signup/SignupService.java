@@ -65,7 +65,7 @@ public class SignupService {
 		// database entry for PropertyInformationPerson
 		if (resultMap.containsKey("idPerson")) {		
 			
-			pipResultMap = signupDao.createPropInfoPerson((Number)resultMap.get("idPerson"), propInfoPerson.getPropertyInformationId());
+			pipResultMap = signupDao.createPropInfoPerson((Number)resultMap.get("idPerson"), propInfoPerson.getPropertyInformationId(), propInfoPerson.getUpdateByPersonId());
 
 			primeRealtyLogger.debug(SignupService.class, "signUpByPropInfo() -> database entry for PropertyInformationPerson: " + pipResultMap);
 			

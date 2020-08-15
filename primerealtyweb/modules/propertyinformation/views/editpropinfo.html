@@ -1,0 +1,176 @@
+<style>
+table.inlineTable{display:inline;}
+/*
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+*/
+/* Set a style for all buttons */
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+    
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+  background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.container {
+  padding: 16px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+ 
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .deletebtn {
+     width: 100%;
+  }
+}
+</style>
+<!-- header starts -->
+<div ui-view="header">
+</div>
+<!-- header ends -->  
+<div ui-view="menu">
+</div>
+<!-- content starts -->
+<p><a href="#!/home">Home</a> > <a href="#!/viewpropinfo">Property Information</a> > <a ng-href="#!/detailpropinfo?{{PropertyInformationId}}">Detail View</a> > Edit</p>   
+<div class="row-padding">
+       {{result.message}}
+  <div class="one-column">     
+      <form name="propInfoForm" novalidate ng-submit="propInfoForm.$valid&&updatePropInfo(propertyInformation)">       
+      <table class="inlineTable">
+          <tr><th colspan="2">Property Details</th></tr>          
+          <tr><td>Square Feet</td><td><input type="textfield" class="halftextfield" name="squareFeet" ng-model="propertyInformation.SquareFeet" ng-maxlength="5" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.squareFeet.$dirty&&propInfoForm.squareFeet.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.squareFeet.$dirty&&propInfoForm.squareFeet.$error.maxlength">Maximum 5 numbers allowed</span></td></tr>
+          <tr><td>Beds</td><td><input type="textfield" class="halftextfield" name="beds" ng-model="propertyInformation.Beds"/></td></tr>
+          <tr><td>Baths</td><td><input type="textfield" class="halftextfield" name="baths" ng-model="propertyInformation.Baths"/></td></tr>
+          <tr><td>Stories</td><td><input type="textfield" class="halftextfield" name="stories" ng-model="propertyInformation.Stories"/></td></tr>
+          <tr><td>Lotsize</td><td><input type="textfield" class="halftextfield" name="lotsize" ng-model="propertyInformation.Lotsize"/></td></tr>          
+          <tr><td>Property Type</td>
+              <td><select name="propertyType" ng-model="propertyInformation.propertytypedata.selectedOption" class="textfield" ng-options="propertyType.PropertyType for propertyType in propertyInformation.propertytypedata.availableOptions track by propertyType.idPropertyType" ng-change="propertyTypeChange(propertyType.idPropertyType, propertyInformation.propertytypedata.selectedOption.idPropertyType)" required></select></td></tr>
+          <tr><td colspan="2"><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.propertyType.$error.required">Required!</span> </td></tr>
+          <tr><td style="padding: 10px;" colspan="2"><input type="button" class="button" ng-click="detailPropInfo()" value="Back"/></td></tr> 
+      </table>  
+      <table class="inlineTable">
+        <tr><th colspan="2">Property Details cont..</th></tr>        
+          <tr><td>Year Built</td><td><input type="textfield" class="halftextfield" name="yearBuilt" ng-model="propertyInformation.YearBuilt" ng-maxlength="4" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.yearBuilt.$dirty&&propInfoForm.yearBuilt.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.yearBuilt.$dirty&&propInfoForm.yearBuilt.$error.maxlength">Maximum 4 numbers allowed</span></td></tr>
+          <tr><td>Year Renovated</td><td><input type="textfield" class="halftextfield" name="yearRenovated" ng-model="propertyInformation.YearRenovated" ng-maxlength="4" ng-pattern="/^[0-9]*$/"/><span style="color:Red" ng-show="propInfoForm.yearRenovated.$dirty&&propInfoForm.yearRenovated.$error.pattern">Only numbers allowed</span><span style="color:Red" ng-show="propInfoForm.yearRenovated.$dirty&&propInfoForm.yearRenovated.$error.maxlength">Maximum 4 numbers allowed</span></td></tr>
+          <tr><td>APN</td><td><input type="textfield" class="halftextfield" name="apn" ng-model="propertyInformation.APN"/></td></tr>
+          <tr><td>Community</td><td><input type="textfield" class="halftextfield" name="community" ng-model="propertyInformation.Community"/></td></tr>
+          <tr><td>HOA Dues</td><td><input type="textfield" class="halftextfield" name="hoaDues" ng-model="propertyInformation.HOADues"/></td></tr>
+          <tr><td style="padding: 10px;"><input type="submit" id="editpropinfosubmit" class="button" value="Update"/></td><td ng-if="!DeleteDisabled" style="padding: 10px;"><input type="button" class="button" ng-click="deletePropInfo()" value="Delete"/></td></tr>           
+      </table>
+      <table class="inlineTable">
+          <tr><th colspan="2">Address Details</th></tr>
+          <tr><td>Address 1</td><td><input type="textfield" class="textfield" name="address1" ng-model="propertyInformation.Address1" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.address1.$error.required">Required!</span> </td></tr>
+          <tr><td>Address 2</td><td><input type="textfield" class="textfield" name="address2" ng-model="propertyInformation.Address2"/></td></tr>
+          <tr><td>Address 3</td><td><input type="textfield" class="textfield" name="address3" ng-model="propertyInformation.Address3"/></td></tr>
+          <tr><td>City</td><td><input type="textfield" class="textfield" name="cityName" ng-model="propertyInformation.CityName" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.cityName.$error.required">Required!</span> </td></tr>
+          <tr><td>Zip</td><td><input type="textfield" class="textfield" name="zip" ng-model="propertyInformation.Zip" required/></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.zip.$error.required">Required!</span></td></tr>
+          <tr><td>State</td><td><select name="stateCode" ng-model="propertyInformation.statecodesdata.selectedOption" class="textfield" ng-options="stateCode.StateCode for stateCode in propertyInformation.statecodesdata.availableOptions track by stateCode.idState" ng-change="stateCodeChange(stateCode.idState, propertyInformation.statecodesdata.selectedOption.idState)" required></select></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.stateCode.$error.required">Required!</span></td></tr>
+          <tr><td>Country</td><td><select name="country" ng-model="propertyInformation.countriesdata.selectedOption" class="textfield" ng-options="country.CountryName for country in propertyInformation.countriesdata.availableOptions track by country.idCountry" ng-change="propertyTypeChange(country.idCountry, propertyInformation.countriesdata.selectedOption.idCountry)"></select></td></tr>
+          <tr><td><span style="color:Red" ng-show="propInfoForm.$submitted&&propInfoForm.country.$error.required">Required!</span></td></tr>
+      </table>  
+      </form>
+  </div>
+</div>
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content" name="deletePropInfoForm" novalidate ng-submit="deletePropInfoForm.$valid&&deletePropInfoConfirm()">
+    <div class="container">
+      <h1>Delete Property Information</h1>
+      <p>All the associated Property Managers, Owners, Tenants, Issues will be deleted. Are you sure you want to delete Property Information?</p>      
+      <p>Enter the reason for deletion: <textarea class="textfield" name="deletedReason" ng-model="DeletedReason" rows="3" required></textarea><span style="color:Red" ng-show="deletePropInfoForm.$submitted&&deletePropInfoForm.deletedReason.$error.required">Required!</span></p>
+      <div class="clearfix">
+          <button onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+          <button class="deletebtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- content ends -->
+    
+<!-- footer starts -->    
+<div ui-view="footer">
+</div>
+<!-- footer ends -->
