@@ -231,7 +231,7 @@ public class SignupDao {
 			PropertyInformationPersonIds = jdbcTemplate.queryForList(PROPERTYINFOPERSON_ACTIVE_QUERY, new Object[] {EmailAddress});
 			
 			if(PropertyInformationPersonIds.size() > 0) {
-				// yes, user has valid start date and end date				
+				// yes, user has valid start date and end date and property is not deleted			
 				resultMap.put("Authenticated", true);		
 			} else {
 				// no, user is exist in PropertyInformationPerson but don't have valid start date and end date
@@ -292,7 +292,7 @@ public class SignupDao {
 	private static String ACCESS_BYUSER_QUERY = "SELECT Authority FROM Access WHERE User_EmailAddress = ?";
 	private static String PASSWORD_BYUSER_QUERY = "SELECT UserPassword FROM User WHERE EmailAddress = ?";
 	private static String PROPERTYINFOPERSON_EXIST_QUERY = "SELECT idPropertyInformationPerson FROM Person, PropertyInformationPerson WHERE PropertyInformationPerson.Person_idPerson = Person.idPerson AND Person.User_EmailAddress = ?";
-	private static String PROPERTYINFOPERSON_ACTIVE_QUERY = "SELECT PropertyInformationPerson.idPropertyInformationPerson, PropertyInformationPerson.PropertyInformation_idPropertyInformation as idPropertyInformation FROM Person, PropertyInformationPerson WHERE PropertyInformationPerson.Person_idPerson = Person.idPerson AND Person.User_EmailAddress = ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP))";
+	private static String PROPERTYINFOPERSON_ACTIVE_QUERY = "SELECT PropertyInformationPerson.idPropertyInformationPerson, PropertyInformation.idPropertyInformation FROM Person, PropertyInformationPerson, PropertyInformation WHERE PropertyInformationPerson.Person_idPerson = Person.idPerson AND PropertyInformationPerson.PropertyInformation_idPropertyInformation = PropertyInformation.idPropertyInformation AND Person.User_EmailAddress = ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP)) AND PropertyInformation.idPropertyInformation NOT IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationDeleted)";
 	private static String EMAILADDRESS_BYPERSON_QUERY = "SELECT User_EmailAddress FROM Person WHERE idPerson = ?";
 	private static String DELETE_PERSON = "DELETE FROM Person WHERE idPerson = ?";
 	private static String DELETE_USER = "DELETE FROM User WHERE Email_Address = ?";
