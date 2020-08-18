@@ -106,16 +106,10 @@ public class PropertyinformationService {
 	}
 	
 	@PostMapping("/propinfoperson")
-	private Map<String, Object> isPropInfoPerson(@Valid @RequestBody PersonId personId) {
+	private Boolean isPropInfoPerson(@Valid @RequestBody PersonId personId) {
 		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
-		Boolean IsPropInfoPerson = propertyinformationDao.isPropInfoPerson(personId.getPersonId());
-		
-		resultMap.put("IsPropInfoPerson", IsPropInfoPerson);
-		
-		return resultMap;
-	
+		return propertyinformationDao.isPropInfoPerson(personId.getPersonId());
+			
 	}
 	
 	@PostMapping("/deletepropertyinformation")

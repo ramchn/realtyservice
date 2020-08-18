@@ -12,7 +12,7 @@ public class PropertyInformation extends Address {
 	@Pattern(regexp = "^[0-9]*$")
 	private String squareFeet;
 	
-	@Size(max = 4)
+	@Size(max = 45)
 	private String beds;
 	
 	@Size(max = 45)

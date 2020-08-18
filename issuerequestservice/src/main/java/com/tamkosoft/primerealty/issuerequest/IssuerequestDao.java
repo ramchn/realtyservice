@@ -138,8 +138,10 @@ public class IssuerequestDao {
 		}		
 		if(!propertyissues.isEmpty()) {
 			propertiesissues.add(propertyissues);
+			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> propertiesissues (issue created fetch) : " + propertiesissues);			
+			return propertiesissues;
 		}
-		
+				
 		// issue assigned fetch				
 		try {			
 			List<Map<String, Object>> issues = jdbcTemplate.queryForList(ISSUES_BYSERVICEPROVIDERPERSON_QUERY, new Object[] {personId});
@@ -192,6 +194,11 @@ public class IssuerequestDao {
 			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> (issue assigned fetch) DataAccessException - " + dae.getMessage());			
 		}		
 		
+		if(!propertiesissues.isEmpty()) {
+			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> propertiesissues (issue assigned fetch) : " + propertiesissues);			
+			return propertiesissues;
+		}
+		
 		//property info created fetch
 		try {			
 			List<Map<String, Object>> PropertyInformations = jdbcTemplate.queryForList(PROPERTIES_BYOWNERPERSON_QUERY, new Object[] {personId});			
@@ -219,12 +226,17 @@ public class IssuerequestDao {
 				propertiesissues.add(propertyissues1);
 			}		
 		} catch (DataAccessException dae) {
-			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> (property info created fetch) DataAccessException - " + dae.getMessage());			
+			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> (prop info created fetch) DataAccessException - " + dae.getMessage());			
+		}
+		
+		if(!propertiesissues.isEmpty()) {
+			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> propertiesissues (prop info created fetch) : " + propertiesissues);			
+			return propertiesissues;
 		}
 		
 		//property info person fetch
 		try {			
-			List<Map<String, Object>> PropertyInformations = jdbcTemplate.queryForList(PROPERTIES_BYPROPINFOPERSON_QUERY, new Object[] {personId, personId});			
+			List<Map<String, Object>> PropertyInformations = jdbcTemplate.queryForList(PROPERTIES_BYPROPINFOPERSON_QUERY, new Object[] {personId});			
 			for (Map<String, Object> PropertyInformation : PropertyInformations) {				
 				Map<String, Object> propertyissues1 = new HashMap<String, Object>();				
 				propertyissues1.put("PropertyInformation", PropertyInformation);				
@@ -249,10 +261,10 @@ public class IssuerequestDao {
 				propertiesissues.add(propertyissues1);
 			}		
 		} catch (DataAccessException dae) {
-			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> (property info person fetch) DataAccessException - " + dae.getMessage());			
+			primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> (prop info person fetch) DataAccessException - " + dae.getMessage());			
 		}
 		
-		primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> propertiesissues : " + propertiesissues);
+		primeRealtyLogger.debug(IssuerequestDao.class, "getIssuesByPerson() -> propertiesissues (prop info person fetch) : " + propertiesissues);
 				
 		return propertiesissues;
 	}
@@ -579,7 +591,7 @@ public class IssuerequestDao {
 	private static String ISSUES_BYASSIGNEDPERSON_QUERY="SELECT Issue.idIssue, Issue.Issue, Issue.IssueDescription, IssueCategory.IssueCategory FROM Issue, IssueCategory WHERE Issue.idIssue IN (:ids) AND Issue.IssueCategory_idIssueCategory = IssueCategory.idIssueCategory AND Issue.PropertyInformation_idPropertyInformation = :issuepropid";
 	private static String PROPERTIES_BYOWNERPERSON_QUERY = "SELECT DISTINCT PropertyInformation.idPropertyInformation, PropertyInformation.SquareFeet, PropertyInformation.YearBuilt, Address.Address1, Address.Address2, Address.CityName, State.StateCode FROM PropertyInformation, PropertyInformationPerson, Issue, Address, State WHERE PropertyInformation.CreatePerson_idPerson = ? AND PropertyInformationPerson.PropertyInformation_idPropertyInformation = PropertyInformation.idPropertyInformation AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP)) AND PropertyInformationPerson.Person_idPerson = Issue.CreatePerson_idPerson AND Issue.PropertyInformation_idPropertyInformation = PropertyInformation.idPropertyInformation AND PropertyInformation.Address_idAddress = Address.idAddress AND Address.State_idState = State.idState AND PropertyInformation.idPropertyInformation NOT IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationDeleted)";
 	private static String ISSUES_BYOWNERPERSON_QUERY = "SELECT Issue.idIssue, Issue.Issue, Issue.IssueDescription, IssueCategory.IssueCategory FROM PropertyInformation, PropertyInformationPerson, Issue, IssueCategory WHERE PropertyInformation.CreatePerson_idPerson = ? AND PropertyInformationPerson.PropertyInformation_idPropertyInformation = PropertyInformation.idPropertyInformation AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP)) AND PropertyInformationPerson.Person_idPerson = Issue.CreatePerson_idPerson AND Issue.IssueCategory_idIssueCategory = IssueCategory.idIssueCategory AND Issue.PropertyInformation_idPropertyInformation = ?";
-	private static String PROPERTIES_BYPROPINFOPERSON_QUERY = "SELECT DISTINCT PropertyInformation.idPropertyInformation, PropertyInformation.SquareFeet, PropertyInformation.YearBuilt, Address.Address1, Address.Address2, Address.CityName, State.StateCode FROM Issue, PropertyInformation, Address, State WHERE Issue.CreatePerson_idPerson IN (SELECT Person_idPerson FROM PropertyInformationPerson WHERE PropertyInformation_idPropertyInformation IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationPerson WHERE Person_idPerson = ?) AND Person_idPerson != ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP))) AND Issue.PropertyInformation_idPropertyInformation = PropertyInformation.idPropertyInformation AND PropertyInformation.Address_idAddress = Address.idAddress AND Address.State_idState = State.idState AND PropertyInformation.idPropertyInformation NOT IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationDeleted)";
+	private static String PROPERTIES_BYPROPINFOPERSON_QUERY = "SELECT PropertyInformation.idPropertyInformation, PropertyInformation.SquareFeet, PropertyInformation.YearBuilt, Address.Address1, Address.Address2, Address.CityName, State.StateCode FROM PropertyInformation, Address, State WHERE PropertyInformation.idPropertyInformation IN (SELECT PropertyInformationPerson.PropertyInformation_idPropertyInformation FROM PropertyInformationPerson, Issue WHERE PropertyInformationPerson.Person_idPerson = ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP)) AND PropertyInformationPerson.PropertyInformation_idPropertyInformation NOT IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationDeleted) AND PropertyInformationPerson.PropertyInformation_idPropertyInformation = Issue.PropertyInformation_idPropertyInformation) AND PropertyInformation.Address_idAddress = Address.idAddress AND Address.State_idState = State.idState";
 	private static String ISSUES_BYPROPINFOPERSON_QUERY = "SELECT Issue.idIssue, Issue.Issue, Issue.IssueDescription, IssueCategory.IssueCategory FROM Issue, IssueCategory WHERE Issue.CreatePerson_idPerson IN (SELECT Person_idPerson FROM PropertyInformationPerson WHERE PropertyInformation_idPropertyInformation IN (SELECT PropertyInformation_idPropertyInformation FROM PropertyInformationPerson WHERE Person_idPerson = ?) AND Person_idPerson != ? AND ((PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate IS NULL) OR (PropertyInformationPerson.StartDate <= CURRENT_TIMESTAMP AND PropertyInformationPerson.EndDate > CURRENT_TIMESTAMP))) AND Issue.IssueCategory_idIssueCategory = IssueCategory.idIssueCategory AND Issue.PropertyInformation_idPropertyInformation = ?";
 	private static String ATTACHMENT_BYISSUE_QUERY = "SELECT Attachment, AttachmentName, AttachmentType FROM Issue, Attachment WHERE Issue.Attachment_idAttachment = Attachment.idAttachment AND Issue.idIssue = ?";
 	private static String ISSUELOG_QUERY = "SELECT IssueLog.idIssueLog, IssueLog.Log, User.FirstName, User.LastName FROM IssueLog, Person, User WHERE IssueLog.Issue_idIssue = ? AND IssueLog.CreatePerson_idPerson = Person.idPerson AND Person.User_EmailAddress = User.EmailAddress";

@@ -21,4 +21,4 @@ forgetpassword.email.subject=Password for login
 forgetpassword.email.content=Password is: <UserPassword> 
   
                 
-logging.level.com.tamkosoft.primerealty=DEBUG
+logging.level.com.tamkosoft.primerealty=INFO

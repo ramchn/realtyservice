@@ -1,4 +1,4 @@
-server.port=${PORT:8074}
+server.port=${PORT:8073}
 
 spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:3306/RealtyDB
 spring.datasource.username=realtyuser
@@ -11,5 +11,7 @@ mail.smtp.port=587
 
 email.address=tamkosoft@gmail.com
 email.password=India123$
-
+                
 logging.level.com.tamkosoft.primerealty=DEBUG
+
+
